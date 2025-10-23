@@ -1,0 +1,1 @@
+patron_producto = "^[A-Za-záéíóú]*$"

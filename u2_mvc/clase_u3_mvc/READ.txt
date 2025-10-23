@@ -1,0 +1,44 @@
+# #############################
+# FLUJO
+# #############################
+
+main.py → vista.py → controlador.py → modelo.py
+
+
+# #############################
+# main.py
+# #############################
+Permite que vista.py sea importada sin ejecutar la interfaz automáticamente (útil para testing).
+Facilita la integración con otras herramientas o módulos.
+Mejora la legibilidad del proyecto: cualquier persona que lo abra sabe que main.py 
+es el punto de partida.
+
+# #############################
+# vista.py
+# #############################
+Define la interfaz y los eventos (botones, entradas, etc.)
+
+¿Por qué se inicia desde vista.py?
+
+1) Tkinter es una biblioteca de interfaz gráfica, y su ciclo de vida comienza cuando 
+se llama a Tk() y luego a mainloop().
+
+2) El archivo vista.py es el que construye la ventana, los botones, 
+los campos de entrada, y define cómo se ve la aplicación.
+
+3) Desde la vista, se invocan funciones del controlador en respuesta a eventos 
+(como hacer clic en un botón).
+
+3) El controlador, a su vez, llama al modelo para acceder o modificar los datos.
+
+
+# #############################
+# controlador.py
+# #############################
+Recibe los eventos, procesa la lógica, y coordina entre vista y modelo
+
+
+# #############################
+# modelo.py
+# #############################
+Maneja la base de datos y operaciones de datos
