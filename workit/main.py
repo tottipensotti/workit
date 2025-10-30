@@ -3,6 +3,7 @@
 import re
 from tkinter import Label, StringVar, DoubleVar, Entry, Button, W, EW, Tk
 from tkinter import ttk
+from tkcalendar import DateEntry
 from modulo_base import conectar_bbdd, crear_tabla_base, agregar, consultar, borrar
 # pylint: disable=broad-except, line-too-long
 
@@ -123,7 +124,7 @@ entradas = [
     Entry(root, textvariable=valor_peso, width=COL_ANCHO, relief="solid"),
     Entry(root, textvariable=valor_reps, width=COL_ANCHO, relief="solid"),
     Entry(root, textvariable=valor_series, width=COL_ANCHO, relief="solid"),
-    Entry(root, textvariable=valor_fecha, width=COL_ANCHO, relief="solid")
+    DateEntry(root, textvariable=valor_fecha, width=COL_ANCHO-2, date_pattern="dd-mm-yyyy"),
 ]
 for i, entrada in enumerate(entradas):
     entrada.grid(row=2, column=i, padx=20, pady=4, ipadx=3, ipady=3)
