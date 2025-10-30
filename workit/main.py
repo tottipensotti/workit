@@ -4,37 +4,61 @@ import re
 from tkinter import Label, StringVar, DoubleVar, Entry, Button, W, EW, Tk
 from tkinter import ttk
 from modulo_base import conectar_bbdd, crear_tabla_base, agregar, consultar, borrar
-# pylint: disable=broad-except
+# pylint: disable=broad-except, line-too-long
 
 CONEXION = conectar_bbdd()
 
 
-def registrar(ejercicio: str, peso: str, reps: str,
-              series: str, fecha: str, mi_treeview: ttk.Treeview) -> None:
+def validar_registro(ejercicio: str, peso: str, reps: str, series: str, fecha: str) -> bool:
+    """Valida el input mediante expresiones regulares"""
+    patrones_regex = {
+        "letras": r"^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$",
+        "numeros":  r"^\d+(\.\d+)?$",
+        "fecha": r"^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$"
+    }
+
+    if not re.match(patrones_regex["letras"], str(ejercicio)):
+        print("❌ Input inválido para ejercicio, solo se admiten letras")
+        return False
+    if not re.match(patrones_regex["numeros"], str(peso)):
+        print("❌ Input inválido para peso, solo se admiten números")
+        return False
+    if not re.match(patrones_regex["numeros"], str(reps)):
+        print("❌ Input inválido para reps, solo se admiten números")
+        return False
+    if not re.match(patrones_regex["numeros"], str(series)):
+        print("❌ Input inválido para series, solo se admiten números")
+        return False
+    if not re.match(patrones_regex["fecha"], str(fecha)):
+        print("❌ Input inválido para fecha, solo se admite formato dd-mm-yyyy")
+        return False
+
+    return True
+
+
+def registrar(ejercicio: str, peso: str, reps: str, series: str, fecha: str, mi_treeview: ttk.Treeview) -> None:
     """Añade un registro"""
-    cadena = ejercicio
-    patron = "^[A-Za-záéíóú]*$"
 
-    print(ejercicio, peso, reps, series, fecha)
-
-    if re.match(patron, cadena):
-        print(ejercicio, peso, reps, series, fecha)
+    if validar_registro(ejercicio, peso, reps, series, fecha):
         datos = (ejercicio, peso, reps, series, fecha)
         agregar(CONEXION, datos)
         actualizar_vista(mi_treeview)
-
+    else:
+        print("❌ Error al añadir registro: datos inválidos.")
 
 def borrar_registro(mi_treeview: ttk.Treeview) -> None:
     """Elimina un registro"""
     valor = mi_treeview.selection()
-    print(valor)
+    
+    if not valor:
+        print("⚠️ No se seleccionó ningún registro.")
+        return
+    
     item = mi_treeview.item(valor)
-    print(item)
-    print(item['text'])
-    _id = item['text']
+    id_borrar = item["values"][0]
 
     try:
-        borrar(CONEXION, _id)
+        borrar(CONEXION, id_borrar)
         print("✅ Registro borrado correctamente.")
         tree.delete(valor)
     except Exception as e:
@@ -49,12 +73,9 @@ def actualizar_vista(mi_treeview: ttk.Treeview) -> None:
 
     resultado = consultar(CONEXION)
     for fila in resultado:
-        print(fila)
         mi_treeview.insert(
-            "",
-            0,
-            text=fila[0],
-            values=(fila[1], fila[2], fila[3], fila[4], fila[5])
+            "", "end",
+            values=(fila[0], fila[1], fila[2], fila[3], fila[4], fila[5])
         )
 
 
@@ -161,13 +182,13 @@ ttk.Separator(root, orient="horizontal").grid(row=4, column=0, columnspan=10, st
 #                 TREEVIEW                     #
 ################################################
 
-columns = ("Id", "Ejercicio", "Peso", "Repeticiones", "Series", "Fecha")
+columns = ("#", "Ejercicio", "Peso", "Repeticiones", "Series", "Fecha")
 tree = ttk.Treeview(root, show="headings", height=10, columns=columns)
 
 for col in columns:
     tree.heading(col, text=col)
 
-tree.column("Id", width=30, anchor=W)
+tree.column("#", width=30, anchor=W)
 tree.column("Ejercicio", width=160, anchor=W)
 tree.column("Peso", width=100, anchor=W)
 tree.column("Repeticiones", width=100, minwidth=80, anchor=W)
