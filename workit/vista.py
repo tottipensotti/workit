@@ -19,6 +19,14 @@ def actualizar_vista(mi_treeview: ttk.Treeview) -> None:
             values=(fila[0], fila[1], fila[2], fila[3], fila[4], fila[5])
         )
 
+def agregar_vista(ejercicio: str, peso: str, reps: str, series: str, fecha: str, mi_treeview: ttk.Treeview) -> None:
+    """Agrega registro y actualiza la vista"""
+    try:
+        agregar_registro(ejercicio, peso, reps, series, fecha)
+        actualizar_vista(mi_treeview)
+    except Exception as e:
+        print(f"❌ Error al agregar registro: {e}")
+
 def borrar_vista(mi_treeview: ttk.Treeview) -> None:
     """Elimina un registro"""
     valor = mi_treeview.selection()
@@ -32,8 +40,9 @@ def borrar_vista(mi_treeview: ttk.Treeview) -> None:
 
     try:
         borrar_registro(id_borrar)
-        print("✅ Registro borrado correctamente.")
+        actualizar_vista(mi_treeview)
         mi_treeview.delete(valor)
+        print("✅ Registro borrado correctamente.")
     except Exception as e:
         print(f"❌ Error al eliminar el registro: {e}")
 
@@ -42,6 +51,10 @@ def inicializar_app():
     root = Tk()
     root.title("Workit 💪")
     root.configure(bg="#f4f4f4")
+
+    for col in range(5):
+        root.columnconfigure(col, weight=1)
+    root.rowconfigure(5, weight=1)
 
     encabezado = Label(
         root,
@@ -53,7 +66,7 @@ def inicializar_app():
         width=80,
         anchor="center"
     )
-    encabezado.grid(row=0, column=0, columnspan=10, padx=1, pady=5, sticky=EW)
+    encabezado.grid(row=0, column=0, columnspan=5, padx=1, pady=5, sticky=EW)
 
     # Variables
     valor_ejercicio = StringVar()
@@ -104,12 +117,13 @@ def inicializar_app():
         root,
         text="Agregar",
         bg="light green",
-        command=lambda: agregar_registro(
+        command=lambda: agregar_vista(
             valor_ejercicio.get(),
-            valor_reps.get(),
             valor_peso.get(),
+            valor_reps.get(),
             valor_series.get(),
-            valor_fecha.get()
+            valor_fecha.get(),
+            tree
         ),
         **config_btn
     )
@@ -125,24 +139,30 @@ def inicializar_app():
     boton_consulta.grid(row=3, column=1, pady=8)
 
     # TODO: Función borrar
-    # boton_borrar = Button(
-    #     root,
-    #     text="Borrar",
-    #     bg="light coral",
-    #     command=lambda: borrar_registro(),
-    #     **config_btn
-    # )
-    # boton_borrar.grid(row=3, column=2, pady=8)
+    boton_borrar = Button(
+        root,
+        text="Borrar",
+        bg="light coral",
+        command=lambda: borrar_vista,
+        **config_btn
+    )
+    boton_borrar.grid(row=3, column=2, pady=8)
 
     # Separador encabezados
-    ttk.Separator(root, orient="horizontal").grid(row=4, column=0, columnspan=10, sticky=W, pady=5)
+    ttk.Separator(root, orient="horizontal").grid(
+        row=4,
+        column=0,
+        columnspan=5,
+        sticky=EW,
+        pady=5
+    )
 
 
     ################################################
     #                 TREEVIEW                     #
     ################################################
 
-    columns = ("#", "Ejercicio", "Peso", "Repeticiones", "Series", "Fecha")
+    columns = ("#", "Ejercicio", "Peso (kg)", "Repeticiones", "Series", "Fecha")
     tree = ttk.Treeview(root, show="headings", height=10, columns=columns)
 
     for col in columns:
@@ -150,12 +170,12 @@ def inicializar_app():
 
     tree.column("#", width=30, anchor=W)
     tree.column("Ejercicio", width=160, anchor=W)
-    tree.column("Peso", width=100, anchor=W)
+    tree.column("Peso (kg)", width=100, anchor=W)
     tree.column("Repeticiones", width=100, minwidth=80, anchor=W)
     tree.column("Series", width=100, minwidth=80, anchor=W)
     tree.column("Fecha", width=120, minwidth=80, anchor=W)
 
-    tree.grid(row=4, column=0, columnspan=5, padx=20, pady=(10, 20), sticky=EW)
+    tree.grid(row=5, column=0, columnspan=5, padx=20, pady=(10, 20), sticky=EW)
 
     actualizar_vista(tree)
     root.mainloop()

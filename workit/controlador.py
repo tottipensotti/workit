@@ -7,6 +7,7 @@ from modulo import conectar_bbdd, crear_tabla_base, agregar, consultar, borrar
 CONEXION = conectar_bbdd()
 crear_tabla_base(CONEXION)
 
+
 def validar_registro(ejercicio: str, peso: str, reps: str, series: str, fecha: str) -> bool:
     """Valida el input mediante expresiones regulares"""
     patrones_regex = {
