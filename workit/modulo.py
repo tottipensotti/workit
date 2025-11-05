@@ -3,7 +3,8 @@
 import sqlite3
 # pylint: disable=broad-except
 
-def conectar_bbdd() -> sqlite3.Connection | None:
+
+def conectar_bbdd() -> sqlite3.Connection:
     """Genera una conexión a la base de datos"""
     try:
         conn = sqlite3.connect("mi_base.db")
@@ -33,13 +34,7 @@ def crear_tabla_base(conn: sqlite3.Connection) -> None:
     except Exception as e:
         print(f"❌ Error al crear la tabla:{e}")
 
-try:
-    conexion = conectar_bbdd()
-    crear_tabla_base(conexion)
-except Exception as e:
-    print(f"❌ Ocurrió un error al iniciar el proyecto: {e}")
-
-def consultar(conn: sqlite3.Connection) -> list[any] | None:
+def consultar(conn: sqlite3.Connection) -> list:
     """Realiza una consulta a la base de datos"""
     cursor = conn.cursor()
     sql = "SELECT * FROM workouts ORDER BY id ASC"
@@ -52,7 +47,7 @@ def consultar(conn: sqlite3.Connection) -> list[any] | None:
         print(f"❌ Error al obtener los datos: {e}")
         return None
 
-def agregar(conn: sqlite3.Connection, datos: tuple[any]) -> None:
+def agregar(conn: sqlite3.Connection, datos: tuple) -> None:
     """Agregar un registro a la base de datos"""
     cursor = conn.cursor()
     sql = """
@@ -67,11 +62,9 @@ def agregar(conn: sqlite3.Connection, datos: tuple[any]) -> None:
     except Exception as e:
         print(f"❌ Error al agregar registro: {e}")
 
-
-def borrar(conn: sqlite3.Connection, id_ejercicio: int) -> None:
+def borrar(conn: sqlite3.Connection, data: tuple) -> None:
     """Borra un registro de la base de datos"""
     cursor = conn.cursor()
-    data = (id_ejercicio,)
     sql = "DELETE FROM workouts WHERE id = ?"
     try:
         cursor.execute(sql, data)
