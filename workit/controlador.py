@@ -39,14 +39,14 @@ def agregar_registro(ejercicio: str, peso: str, reps: str, series: str, fecha: s
 
     if validar_registro(ejercicio, peso, reps, series, fecha):
         datos = (ejercicio, peso, reps, series, fecha)
-        return agregar(CONEXION, datos)
+        agregar(CONEXION, datos)
     else:
         print("❌ Error al añadir registro: datos inválidos.")
-        return None
 
 def borrar_registro(id_borrar: int) -> None:
     """Elimina un registro"""
-    return borrar(CONEXION, id_borrar)
+    data = (id_borrar,)
+    borrar(CONEXION, data)
 
 def consultar_registros():
     """Consulta los registros en la base de datos"""

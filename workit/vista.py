@@ -27,21 +27,17 @@ def agregar_vista(ejercicio: str, peso: str, reps: str, series: str, fecha: str,
     except Exception as e:
         print(f"❌ Error al agregar registro: {e}")
 
-def borrar_vista(mi_treeview: ttk.Treeview) -> None:
+def borrar_vista(mi_treeview: ttk.Treeview, id_borrar: str) -> None:
     """Elimina un registro"""
-    valor = mi_treeview.selection()
-
-    if not valor:
+    item = mi_treeview.item(id_borrar).get("values")[0]
+    if not item:
         print("⚠️ No se seleccionó ningún registro.")
         return
 
-    item = mi_treeview.item(valor)
-    id_borrar = item["values"][0]
-
     try:
-        borrar_registro(id_borrar)
+        borrar_registro(item)
         actualizar_vista(mi_treeview)
-        mi_treeview.delete(valor)
+        # mi_treeview.delete(id_borrar)
         print("✅ Registro borrado correctamente.")
     except Exception as e:
         print(f"❌ Error al eliminar el registro: {e}")
@@ -143,7 +139,7 @@ def inicializar_app():
         root,
         text="Borrar",
         bg="light coral",
-        command=lambda: borrar_vista,
+        command=lambda: borrar_vista(tree, tree.focus()),
         **config_btn
     )
     boton_borrar.grid(row=3, column=2, pady=8)

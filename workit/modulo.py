@@ -62,10 +62,9 @@ def agregar(conn: sqlite3.Connection, datos: tuple) -> None:
     except Exception as e:
         print(f"❌ Error al agregar registro: {e}")
 
-def borrar(conn: sqlite3.Connection, id_ejercicio: int) -> None:
+def borrar(conn: sqlite3.Connection, data: tuple) -> None:
     """Borra un registro de la base de datos"""
     cursor = conn.cursor()
-    data = (id_ejercicio,)
     sql = "DELETE FROM workouts WHERE id = ?"
     try:
         cursor.execute(sql, data)
