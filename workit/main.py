@@ -1,6 +1,8 @@
-"""Workit 1.0.0"""
+"""Entrypoint de la aplicación"""
 
-from vista import inicializar_app
+from vista import AppUI
+
+app = AppUI('workit')
 
 if __name__ == "__main__":
-    inicializar_app()
+    app.inicializar_app()
