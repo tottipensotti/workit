@@ -1,174 +1,164 @@
-"""Script para manejar la vista de la app"""
+"""Script para manejar la interacción con la UI de la app"""
 
 from tkinter import ttk
 from tkinter import Label, StringVar, DoubleVar, Entry, Button, W, EW, Tk
 from tkcalendar import DateEntry
-from controlador import consultar_registros, borrar_registro, agregar_registro
+from controlador import Controlador
 
-def actualizar_vista(mi_treeview: ttk.Treeview) -> None:
-    """Actualizar vista de la GUI"""
-    registros = mi_treeview.get_children()
-    for elemento in registros:
-        mi_treeview.delete(elemento)
+class TkUI():
+    """Clase padre con configuración de Tkinter"""
+    def __init__(self):
+        self.root = Tk()
+        self.tree = ttk.Treeview()
 
-    resultado = consultar_registros()
-    for fila in resultado:
-        mi_treeview.insert(
-            "", "end",
-            values=(fila[0], fila[1], fila[2], fila[3], fila[4], fila[5])
+class AppUI(TkUI):
+    """Clase que maneja la UI"""
+    def __init__(self, title):
+        super().__init__()
+        self.controlador_vista = Controlador()
+        self.title = title
+        self.header = Label(
+            self.root,
+            text="Agregue su ejercicio",
+            bg="DarkOrchid3",
+            fg="thistle1",
+            font=("Segoe UI", 12, "bold"),
+            height=2,
+            width=80,
+            anchor="center"
+        )
+        self.bg_color = "#f4f4f4"
+        self.labels = ["Ejericio", "Peso (kg)", "Repeticiones", "Series", "Fecha"]
+        self.columns = ("#", "Ejercicio", "Peso (kg)", "Repeticiones", "Series", "Fecha")
+        self.valor_ejercicio = StringVar()
+        self.valor_peso = DoubleVar()
+        self.valor_reps = DoubleVar()
+        self.valor_series = DoubleVar()
+        self.valor_fecha = StringVar()
+        self.ancho_col = 20
+        self.entries = [
+            Entry(self.root, textvariable=self.valor_ejercicio, width=self.ancho_col, relief="solid"),
+            Entry(self.root, textvariable=self.valor_peso, width=self.ancho_col, relief="solid"),
+            Entry(self.root, textvariable=self.valor_reps, width=self.ancho_col, relief="solid"),
+            Entry(self.root, textvariable=self.valor_series, width=self.ancho_col, relief="solid"),
+            DateEntry(self.root, textvariable=self.valor_fecha, width=self.ancho_col-2, date_pattern="dd-mm-yyyy"),
+        ]
+        self.config_btn = {
+            "width": 20,
+            "height": 2,
+            "relief": "flat",
+            "font": ("Segoe UI", 9, "bold"),
+            "cursor": "hand2",
+            "fg": "black",
+            "highlightthickness": 0,
+            "bd": 0
+        }
+        self.boton_registro = Button(
+            self.root,
+            text="Agregar",
+            bg="light green",
+            command=lambda: self.agregar_vista({
+                    "ejercicio": self.valor_ejercicio.get(),
+                    "peso": self.valor_peso.get(),
+                    "reps": self.valor_reps.get(),
+                    "series": self.valor_series.get(),
+                    "fecha": self.valor_fecha.get()
+                }),
+            **self.config_btn
+        )
+        self.boton_consulta = Button(
+            self.root,
+            text="Consultar",
+            bg="khaki1",
+            command=lambda: self.controlador_vista.consultar_registro,
+            **self.config_btn
+        )
+        self.boton_borrar = Button(
+            self.root,
+            text="Borrar",
+            bg="light coral",
+            command=lambda: self.borrar_vista(self.tree.focus()),
+            **self.config_btn
         )
 
-def agregar_vista(ejercicio: str, peso: str, reps: str, series: str, fecha: str, mi_treeview: ttk.Treeview) -> None:
-    """Agrega registro y actualiza la vista"""
-    try:
-        agregar_registro(ejercicio, peso, reps, series, fecha)
-        actualizar_vista(mi_treeview)
-    except Exception as e:
-        print(f"❌ Error al agregar registro: {e}")
+    def _generar_etiquetas(self):
+        """Genera las etiquetas en la UI"""
+        for i, etiqueta in enumerate(self.labels):
+            Label(
+                self.root, text=etiqueta, bg=self.bg_color, font=("Segoe UI", 10, "bold")
+            ).grid(row=1, column=i, padx=5, pady=(10,2))
 
-def borrar_vista(mi_treeview: ttk.Treeview, id_borrar: str) -> None:
-    """Elimina un registro"""
-    item = mi_treeview.item(id_borrar).get("values")[0]
-    if not item:
-        print("⚠️ No se seleccionó ningún registro.")
-        return
+    def _generar_entradas(self):
+        """Genera las entradas en la UI"""
+        for i, entrada in enumerate(self.entries):
+            entrada.grid(row=2, column=i, padx=20, pady=4, ipadx=3, ipady=3)
 
-    try:
-        borrar_registro(item)
-        actualizar_vista(mi_treeview)
-        print("✅ Registro borrado correctamente.")
-    except Exception as e:
-        print(f"❌ Error al eliminar el registro: {e}")
+    def _generar_botones(self):
+        self.boton_registro.grid(row=3, column=0, pady=4, padx=20)
+        self.boton_consulta.grid(row=3, column=1, pady=8)
+        self.boton_borrar.grid(row=3, column=2, pady=8)
 
-def inicializar_app():
-    """Inicializa y controla la UI de la app"""
-    root = Tk()
-    root.title("Workit 💪")
-    root.configure(bg="#f4f4f4")
+    def actualizar_vista(self):
+        """Actualiza la vista de la UI"""
+        registros = self.tree.get_children()
+        for registro in registros:
+            self.tree.delete(registro)
 
-    for col in range(5):
-        root.columnconfigure(col, weight=1)
-    root.rowconfigure(5, weight=1)
+        resultado = self.controlador_vista.consultar_registro()
+        for fila in resultado:
+            self.tree.insert(
+                "", "end",
+                values=(fila[0], fila[1], fila[2], fila[3], fila[4], fila[5])
+            )
 
-    encabezado = Label(
-        root,
-        text="Agregue su ejercicio",
-        bg="DarkOrchid3",
-        fg="thistle1",
-        font=("Segoe UI", 12, "bold"),
-        height=2,
-        width=80,
-        anchor="center"
-    )
-    encabezado.grid(row=0, column=0, columnspan=5, padx=1, pady=5, sticky=EW)
+    def agregar_vista(self, data):
+        """Agrega un registro a la UI"""
+        try:
+            self.controlador_vista.agregar_registro(data)
+            self.actualizar_vista()
+        except Exception as e:
+            print(f"❌ Error al agregar registro: {e}")
 
-    # Variables
-    valor_ejercicio = StringVar()
-    valor_peso = DoubleVar()
-    valor_reps = DoubleVar()
-    valor_series = DoubleVar()
-    valor_fecha = StringVar()
-    ancho_col = 20
+    def borrar_vista(self, id_borrar):
+        """Elimina un registro de la UI"""
+        item = self.tree.item(id_borrar).get('values')[0]
+        if not item:
+            print("⚠️ No se seleccionó ningún registro.")
+            return
 
-    # Etiquetas
-    etiquetas = [
-        "Ejercicio",
-        "Peso (kg)",
-        "Repeticiones",
-        "Series",
-        "Fecha (dd-mm-yyyy)"
-    ]
+        try:
+            self.controlador_vista.borrar_registro(item)
+            self.actualizar_vista()
+        except Exception as e:
+            print(f"❌ Error al eliminar el registro: {e}")
 
-    for i, etiqueta in enumerate(etiquetas):
-        Label(root, text=etiqueta, bg="#f4f4f4", font=("Segoe UI", 10, "bold")).grid(
-            row=1, column=i, padx=5, pady=(10, 2)
-        )
+    def inicializar_app(self):
+        """Inicializa y controla la UI de la app"""
+        self.root.title(self.title)
+        self.root.configure(bg=self.bg_color)
 
-    # Entradas
-    entradas = [
-        Entry(root, textvariable=valor_ejercicio, width=ancho_col, relief="solid"),
-        Entry(root, textvariable=valor_peso, width=ancho_col, relief="solid"),
-        Entry(root, textvariable=valor_reps, width=ancho_col, relief="solid"),
-        Entry(root, textvariable=valor_series, width=ancho_col, relief="solid"),
-        DateEntry(root, textvariable=valor_fecha, width=ancho_col-2, date_pattern="dd-mm-yyyy"),
-    ]
-    for i, entrada in enumerate(entradas):
-        entrada.grid(row=2, column=i, padx=20, pady=4, ipadx=3, ipady=3)
+        for col in range(5):
+            self.root.columnconfigure(col, weight=1)
+        self.root.rowconfigure(5, weight=1)
 
-    # Botones
-    config_btn = {
-        "width": 20,
-        "height": 2,
-        "relief": "flat",
-        "font": ("Segoe UI", 9, "bold"),
-        "cursor": "hand2",
-        "fg": "black",
-        "highlightthickness": 0,
-        "bd": 0
-    }
+        self.header.grid(row=0, column=0, columnspan=5, padx=1, pady=5, sticky=EW)
 
-    boton_registro = Button(
-        root,
-        text="Agregar",
-        bg="light green",
-        command=lambda: agregar_vista(
-            valor_ejercicio.get(),
-            valor_peso.get(),
-            valor_reps.get(),
-            valor_series.get(),
-            valor_fecha.get(),
-            tree
-        ),
-        **config_btn
-    )
-    boton_registro.grid(row=3, column=0, pady=4, padx=20)
+        self._generar_etiquetas()
+        self._generar_entradas()
+        self._generar_botones()
 
-    boton_consulta = Button(
-        root,
-        text="Consultar",
-        bg="khaki1",
-        command=lambda: consultar_registros,
-        **config_btn
-    )
-    boton_consulta.grid(row=3, column=1, pady=8)
+        self.tree = ttk.Treeview(self.root, show="headings", height=10, columns=self.columns)
+        for col in self.columns:
+            self.tree.heading(col, text=col)
 
-    boton_borrar = Button(
-        root,
-        text="Borrar",
-        bg="light coral",
-        command=lambda: borrar_vista(tree, tree.focus()),
-        **config_btn
-    )
-    boton_borrar.grid(row=3, column=2, pady=8)
+        self.tree.column("#", width=30, anchor=W)
+        self.tree.column("Ejercicio", width=160, anchor=W)
+        self.tree.column("Peso (kg)", width=100, anchor=W)
+        self.tree.column("Repeticiones", width=100, minwidth=80, anchor=W)
+        self.tree.column("Series", width=100, minwidth=80, anchor=W)
+        self.tree.column("Fecha", width=120, minwidth=80, anchor=W)
 
-    # Separador encabezados
-    ttk.Separator(root, orient="horizontal").grid(
-        row=4,
-        column=0,
-        columnspan=5,
-        sticky=EW,
-        pady=5
-    )
+        self.tree.grid(row=5, column=0, columnspan=5, padx=20, pady=(10, 20), sticky=EW)
 
-
-    ################################################
-    #                 TREEVIEW                     #
-    ################################################
-
-    columns = ("#", "Ejercicio", "Peso (kg)", "Repeticiones", "Series", "Fecha")
-    tree = ttk.Treeview(root, show="headings", height=10, columns=columns)
-
-    for col in columns:
-        tree.heading(col, text=col)
-
-    tree.column("#", width=30, anchor=W)
-    tree.column("Ejercicio", width=160, anchor=W)
-    tree.column("Peso (kg)", width=100, anchor=W)
-    tree.column("Repeticiones", width=100, minwidth=80, anchor=W)
-    tree.column("Series", width=100, minwidth=80, anchor=W)
-    tree.column("Fecha", width=120, minwidth=80, anchor=W)
-
-    tree.grid(row=5, column=0, columnspan=5, padx=20, pady=(10, 20), sticky=EW)
-
-    actualizar_vista(tree)
-    root.mainloop()
+        self.actualizar_vista()
+        self.root.mainloop()
