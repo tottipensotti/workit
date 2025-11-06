@@ -5,7 +5,6 @@ from tkinter import Label, StringVar, DoubleVar, Entry, Button, W, EW, Tk
 from tkcalendar import DateEntry
 from controlador import consultar_registros, borrar_registro, agregar_registro
 
-
 def actualizar_vista(mi_treeview: ttk.Treeview) -> None:
     """Actualizar vista de la GUI"""
     registros = mi_treeview.get_children()
@@ -37,7 +36,6 @@ def borrar_vista(mi_treeview: ttk.Treeview, id_borrar: str) -> None:
     try:
         borrar_registro(item)
         actualizar_vista(mi_treeview)
-        # mi_treeview.delete(id_borrar)
         print("✅ Registro borrado correctamente.")
     except Exception as e:
         print(f"❌ Error al eliminar el registro: {e}")
@@ -134,7 +132,6 @@ def inicializar_app():
     )
     boton_consulta.grid(row=3, column=1, pady=8)
 
-    # TODO: Función borrar
     boton_borrar = Button(
         root,
         text="Borrar",
