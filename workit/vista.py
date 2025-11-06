@@ -5,13 +5,13 @@ from tkinter import Label, StringVar, DoubleVar, Entry, Button, W, EW, Tk
 from tkcalendar import DateEntry
 from controlador import Controlador
 
-class TkUI():
+class TkTree():
     """Clase padre con configuración de Tkinter"""
     def __init__(self):
         self.root = Tk()
         self.tree = ttk.Treeview(self.root, show="headings", height=10, columns=self.columns)
 
-class AppUI(TkUI):
+class App(TkTree):
     """Clase que maneja la UI"""
     def __init__(self, title):
         super().__init__()
