@@ -9,7 +9,7 @@ class TkUI():
     """Clase padre con configuración de Tkinter"""
     def __init__(self):
         self.root = Tk()
-        self.tree = ttk.Treeview()
+        self.tree = ttk.Treeview(self.root, show="headings", height=10, columns=self.columns)
 
 class AppUI(TkUI):
     """Clase que maneja la UI"""
@@ -94,6 +94,7 @@ class AppUI(TkUI):
             entrada.grid(row=2, column=i, padx=20, pady=4, ipadx=3, ipady=3)
 
     def _generar_botones(self):
+        """Genero los botones de la UI"""
         self.boton_registro.grid(row=3, column=0, pady=4, padx=20)
         self.boton_consulta.grid(row=3, column=1, pady=8)
         self.boton_borrar.grid(row=3, column=2, pady=8)
@@ -147,7 +148,6 @@ class AppUI(TkUI):
         self._generar_entradas()
         self._generar_botones()
 
-        self.tree = ttk.Treeview(self.root, show="headings", height=10, columns=self.columns)
         for col in self.columns:
             self.tree.heading(col, text=col)
 
