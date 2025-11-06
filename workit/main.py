@@ -1,8 +1,8 @@
 """Entrypoint de la aplicación"""
 
-from vista import AppUI
+from vista import App
 
-app = AppUI('workit')
+app = App('Workit 💪')
 
 if __name__ == "__main__":
     app.inicializar_app()
