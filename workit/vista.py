@@ -11,6 +11,35 @@ class TkTree():
         self.root = Tk()
         self.tree = ttk.Treeview(self.root, show="headings", height=10, columns=self.columns)
 
+class Boton:
+    """Clase para crear botones"""
+    def __init__(self, root, texto, bg_color, comando, **kwargs):
+        self.root = root
+        self.texto = texto
+        self.color = bg_color
+        self.comando = command
+        self.config_base = {
+            "width": 20,
+            "height": 2,
+            "relief": "flat",
+            "font": ("Segoe UI", 9, "bold"),
+            "cursor": "hand2",
+            "fg": "black",
+            "highlightthickness": 0,
+            "bd": 0
+        }
+        self.boton = Button(
+            self.root,
+            text=self.texto,
+            bg=self.color,
+            command=self.comando,
+            **self.config_base
+        )
+
+    def mostrar(self, row, column, **kwargs):
+        """Muestra el botón en la grilla"""
+        self.boton.grid(row=row, column=column, **kwargs)
+        
 class App(TkTree):
     """Clase que maneja la UI"""
     def __init__(self, title):
@@ -43,17 +72,8 @@ class App(TkTree):
             Entry(self.root, textvariable=self.valor_series, width=self.ancho_col, relief="solid"),
             DateEntry(self.root, textvariable=self.valor_fecha, width=self.ancho_col-2, date_pattern="dd-mm-yyyy"),
         ]
-        self.config_btn = {
-            "width": 20,
-            "height": 2,
-            "relief": "flat",
-            "font": ("Segoe UI", 9, "bold"),
-            "cursor": "hand2",
-            "fg": "black",
-            "highlightthickness": 0,
-            "bd": 0
-        }
-        self.boton_registro = Button(
+       
+        self.boton_agregar = Boton(
             self.root,
             text="Agregar",
             bg="light green",
@@ -63,22 +83,19 @@ class App(TkTree):
                     "reps": self.valor_reps.get(),
                     "series": self.valor_series.get(),
                     "fecha": self.valor_fecha.get()
-                }),
-            **self.config_btn
+                })
         )
-        self.boton_consulta = Button(
+        self.boton_consultar = Boton(
             self.root,
             text="Consultar",
             bg="khaki1",
-            command=lambda: self.controlador_vista.consultar_registro,
-            **self.config_btn
+            command=lambda: self.controlador_vista.consultar_registro()
         )
-        self.boton_borrar = Button(
+        self.boton_borrar = Boton(
             self.root,
             text="Borrar",
             bg="light coral",
-            command=lambda: self.borrar_vista(self.tree.focus()),
-            **self.config_btn
+            command=lambda: self.borrar_vista(self.tree.focus())
         )
 
     def _generar_etiquetas(self):
@@ -95,9 +112,9 @@ class App(TkTree):
 
     def _generar_botones(self):
         """Genero los botones de la UI"""
-        self.boton_registro.grid(row=3, column=0, pady=4, padx=20)
-        self.boton_consulta.grid(row=3, column=1, pady=8)
-        self.boton_borrar.grid(row=3, column=2, pady=8)
+        self.boton_agregar.mostrar(row=3, column=0, pady=8)
+        self.boton_consultar.mostrar(row=3, column=1, pady=8)
+        self.boton_borrar.mostrar(row=3, column=2, pady=8)
 
     def actualizar_vista(self):
         """Actualiza la vista de la UI"""
