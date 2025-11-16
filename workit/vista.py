@@ -9,15 +9,14 @@ class TkTree():
     """Clase padre con configuración de Tkinter"""
     def __init__(self):
         self.root = Tk()
-        self.tree = ttk.Treeview(self.root, show="headings", height=10, columns=self.columns)
 
 class Boton:
     """Clase para crear botones"""
-    def __init__(self, root, texto, bg_color, comando, **kwargs):
+    def __init__(self, root, texto, bg_color, comando):
         self.root = root
         self.texto = texto
         self.color = bg_color
-        self.comando = command
+        self.comando = comando
         self.config_base = {
             "width": 20,
             "height": 2,
@@ -39,7 +38,7 @@ class Boton:
     def mostrar(self, row, column, **kwargs):
         """Muestra el botón en la grilla"""
         self.boton.grid(row=row, column=column, **kwargs)
-        
+
 class App(TkTree):
     """Clase que maneja la UI"""
     def __init__(self, title):
@@ -57,8 +56,9 @@ class App(TkTree):
             anchor="center"
         )
         self.bg_color = "#f4f4f4"
-        self.labels = ["Ejericio", "Peso (kg)", "Repeticiones", "Series", "Fecha"]
+        self.labels = ["Ejercicio", "Peso (kg)", "Repeticiones", "Series", "Fecha"]
         self.columns = ("#", "Ejercicio", "Peso (kg)", "Repeticiones", "Series", "Fecha")
+        self.tree = ttk.Treeview(self.root, show="headings", height=10, columns=self.columns)
         self.valor_ejercicio = StringVar()
         self.valor_peso = DoubleVar()
         self.valor_reps = DoubleVar()
@@ -72,12 +72,11 @@ class App(TkTree):
             Entry(self.root, textvariable=self.valor_series, width=self.ancho_col, relief="solid"),
             DateEntry(self.root, textvariable=self.valor_fecha, width=self.ancho_col-2, date_pattern="dd-mm-yyyy"),
         ]
-       
         self.boton_agregar = Boton(
             self.root,
-            text="Agregar",
-            bg="light green",
-            command=lambda: self.agregar_vista({
+            texto="Agregar",
+            bg_color="light green",
+            comando=lambda: self.agregar_vista({
                     "ejercicio": self.valor_ejercicio.get(),
                     "peso": self.valor_peso.get(),
                     "reps": self.valor_reps.get(),
@@ -87,15 +86,15 @@ class App(TkTree):
         )
         self.boton_consultar = Boton(
             self.root,
-            text="Consultar",
-            bg="khaki1",
-            command=lambda: self.controlador_vista.consultar_registro()
+            texto="Consultar",
+            bg_color="khaki1",
+            comando=self.controlador_vista.consultar_registro()
         )
         self.boton_borrar = Boton(
             self.root,
-            text="Borrar",
-            bg="light coral",
-            command=lambda: self.borrar_vista(self.tree.focus())
+            texto="Borrar",
+            bg_color="light coral",
+            comando=lambda: self.borrar_vista(self.tree.focus())
         )
 
     def _generar_etiquetas(self):
