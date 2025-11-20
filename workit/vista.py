@@ -1,7 +1,7 @@
 """Script para manejar la interacción con la UI de la app"""
 
 from tkinter import ttk
-from tkinter import Label, StringVar, DoubleVar, Entry, Button, W, EW, Tk
+from tkinter import Label, StringVar, DoubleVar, Entry, Button, W, EW, Tk, messagebox
 from tkcalendar import DateEntry
 from controlador import Controlador
 
@@ -11,7 +11,7 @@ class TkTree():
         self.root = Tk()
 
 class Boton:
-    """Clase para crear botones"""
+    """Clase auxiliar para crear botones"""
     def __init__(self, root, texto, bg_color, comando):
         self.root = root
         self.texto = texto
@@ -141,6 +141,15 @@ class App(TkTree):
         item = self.tree.item(id_borrar).get('values')[0]
         if not item:
             print("⚠️ No se seleccionó ningún registro.")
+            return
+
+        confirmacion = messagebox.askyesno(
+            "Confirmar eliminación",
+            f"¿Estás seguro de eliminar el registro con ID {item}?"
+        )
+
+        if not confirmacion:
+            print("⚠️ Eliminación cancelada por el usuario.")
             return
 
         try:
