@@ -1,7 +1,7 @@
 """Script con las funciones para controlar la app"""
 
 import re
-from modulo import SqlExecutor
+from modelo import SqlExecutor
 
 class Controlador():
     """Clase que controla la interacción entre UI y la BBDD"""
