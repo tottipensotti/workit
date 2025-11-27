@@ -74,7 +74,7 @@ class App:
             print(f"Registro {item_id} eliminado correctamente")
         except Exception as e:
             print(f"❌ Error al borrar registro: {e}")
-    
+
     def modificar(self):
         """Modifica el registro seleccionado"""
         item = self.tabla.tree.selection()
@@ -96,7 +96,7 @@ class App:
 
         if not confirmacion:
             return
-        
+
         data = {
             "id": id_registro,
             "ejercicio": self.formulario.valor_ejercicio.get(),
