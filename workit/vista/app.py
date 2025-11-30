@@ -1,6 +1,6 @@
 """App"""
 from tkinter import Tk, messagebox
-from controlador import Controlador
+from workit.controlador import Controlador
 from .componentes import Botonera, Header
 from .formulario import Formulario
 from .tabla import Tabla

@@ -1,7 +1,7 @@
 """Script con las funciones para controlar la app"""
 
 import re
-from modelo.executor import Executor
+from workit.modelo.executor import Executor
 
 class Controlador:
     """Clase que controla la interacción entre UI y la BBDD"""

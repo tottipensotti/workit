@@ -1,6 +1,9 @@
 """Entrypoint de la aplicación"""
 
-from vista import App
+from workit.vista import App
+
+def main():
+    app = App('Workit 💪')
 
 if __name__ == "__main__":
-    app = App('Workit 💪')
+    main()
