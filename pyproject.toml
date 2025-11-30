@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=65.5.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "workit"
+version = "0.1.0"
+description = "A workout exercises tracker app."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+  { name = "Totti", email = "you@example.com" }
+]
+license = "MIT"
+dependencies = [
+  "peewee==3.18.3",
+  "babel>=2.17",
+  "tkcalendar==1.6.1"
+]
+
+[project.scripts]
+workit = "workit.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "docs*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = ">=3.11, <3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
