@@ -31,6 +31,7 @@ class Formulario:
                 self.root,
                 text=etiqueta,
                 bg=self.color,
+                fg="black",
                 font=("Segoe UI", 10, "bold")
             ).grid(row=1, column=i, padx=5, pady=(10,2))
 
