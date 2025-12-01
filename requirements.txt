@@ -1,2 +1,0 @@
-peewee==3.18.3
-tkcalendar==1.6.1
