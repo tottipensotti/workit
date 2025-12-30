@@ -2,6 +2,7 @@
 
 import re
 from workit.modelo.executor import Executor
+from workit.utils.decoradores import validar_input
 
 class Controlador:
     """Clase que controla la interacción entre UI y la BBDD"""
@@ -13,21 +14,20 @@ class Controlador:
             "fecha": r"^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$"
         }
 
-    def validar_registro(self, data):
-        """Valida el input mediante expresiones regulares"""
-        if not re.match(self.patrones_regex['letras'], str(data['ejercicio'])):
-            raise ValueError("Input inválido para ejercicio, solo se admiten letras")
-        if not re.match(self.patrones_regex['numeros'], str(data['peso'])):
-            raise ValueError("Input inválido para peso, solo se admiten números")
-        if not re.match(self.patrones_regex['numeros'], str(data['reps'])):
-            raise ValueError("Input inválido para reps, solo se admiten números")
-        if not re.match(self.patrones_regex['numeros'], str(data['series'])):
-            raise ValueError("Input inválido para series, solo se admiten números")
-        if not re.match(self.patrones_regex['fecha'], str(data['fecha'])):
-            raise ValueError("Input inválido para fecha, solo se admite formato dd-mm-yyyy")
-
-        return True
-
+    @validar_input(
+        patterns={
+            "letras": r"^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$",
+            "numeros":  r"^\d+(\.\d+)?$",
+            "fecha": r"^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$"
+        },
+        error_msg={
+            'ejercicio': "Input inválido para ejercicio, solo se admiten letras",
+            'peso': "Input inválido para peso, solo se admiten números",
+            'reps': "Input inválido para reps, solo se admiten números",
+            'series': "Input inválido para series, solo se admiten números",
+            'fecha': "Input inválido para fecha, solo se admite formato dd-mm-yyyy"
+        }
+    )
     def agregar_registro(self, data):
         """Añade un registro a la base de datos"""
         if self.validar_registro(data):
@@ -44,7 +44,21 @@ class Controlador:
         registros = self.executor.consultar_bbdd()
         print("✅ Datos obtenidos correctamente")
         return registros
-
+    
+    @validar_input(
+        patterns={
+            "letras": r"^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$",
+            "numeros":  r"^\d+(\.\d+)?$",
+            "fecha": r"^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$"
+        },
+        error_msg={
+            'ejercicio': "Input inválido para ejercicio, solo se admiten letras",
+            'peso': "Input inválido para peso, solo se admiten números",
+            'reps': "Input inválido para reps, solo se admiten números",
+            'series': "Input inválido para series, solo se admiten números",
+            'fecha': "Input inválido para fecha, solo se admite formato dd-mm-yyyy"
+        }
+    )
     def modificar_registro(self, data):
         """Modifica un registro de la base de datos"""
         self.executor.modificar_bbdd(data)

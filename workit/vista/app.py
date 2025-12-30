@@ -46,7 +46,7 @@ class App:
             "fecha": self.formulario.valor_fecha.get()
         }
         try:
-            self.controlador_vista.agregar_registro(data)
+            self.controlador_vista.agregar_registro(data=data)
             self.actualizar_vista()
         except ValueError as e:
             print(f"❌ Error al agregar registro: {e}")
