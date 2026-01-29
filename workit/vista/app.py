@@ -47,15 +47,16 @@ class App:
         }
         try:
             self.controlador_vista.agregar_registro(data=data)
+            self.formulario.limpiar_formulario()
             self.actualizar_vista()
         except ValueError as e:
-            print(f"❌ Error al agregar registro: {e}")
+            messagebox.showerror("Error de validación", str(e))
 
     def borrar(self):
-        """Elimina registro seleccionao en la vista"""
+        """Elimina registro seleccionado en la vista"""
         item = self.tabla.tree.selection()
         if not item:
-            print("⚠️ No se seleccionó ningún registro.")
+            messagebox.showwarning("Advertencia", "Debe seleccionar un registro")
             return
 
         item_id = self.tabla.tree.item(item, "values")[0]
@@ -65,15 +66,13 @@ class App:
         )
 
         if not confirmacion:
-            print("⚠️ Eliminación cancelada por el usuario.")
             return
 
         try:
             self.controlador_vista.borrar_registro(int(item_id))
             self.actualizar_vista()
-            print(f"Registro {item_id} eliminado correctamente")
         except Exception as e:
-            print(f"❌ Error al borrar registro: {e}")
+            messagebox.showerror("Error", str(e))
 
     def modificar(self):
         """Modifica el registro seleccionado"""
@@ -111,7 +110,7 @@ class App:
             self.formulario.limpiar_formulario()
             self.actualizar_vista()
         except ValueError as e:
-            print("❌ Error de validación", str(e))
+            messagebox.showerror("Error de validación", str(e))
 
     def actualizar_vista(self):
         """Actualiza el contenido de la vista con los datos de la bbdd"""
