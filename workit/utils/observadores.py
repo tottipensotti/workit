@@ -1,0 +1,70 @@
+from datetime import datetime
+
+
+class Sujeto:
+    """Clase que notifica a los observadores sobre eventos"""
+
+    def __init__(self):
+        self._observadores = []
+
+    def suscribe(self, observador):
+        if observador not in self._observadores:
+            self._observadores.append(observador)
+
+    def unsuscribe(self, observador):
+        if observador in self._observadores:
+            self._observadores.remove(observador)
+
+    def notify(self, evento):
+        for observador in self._observadores:
+            observador.update(evento)
+
+
+class Observador:
+    def update(self, evento):
+        raise NotImplementedError("Los observadores deben implementar el método update().")
+
+class RegistroConsola(Observador):
+    """
+    Observador que registra logs en consola
+    """
+
+    def update(self, event):
+        timestamp = event.get('timestamp', '')
+        estado = event.get('status', '')
+        mensaje = event.get('message', '')
+        datos = event.get('data', None)
+
+        sufijo = f": {datos}" if datos is not None else ""
+        print(f"[{timestamp}] [{estado.upper()}] {mensaje}{sufijo}")
+
+class RegistroArchivo(Observador):
+    """
+    Observador que registra logs en un archivo
+    """
+
+    def __init__(self, file_path):
+        self.file_path = file_path
+    
+    def update(self, event):
+        timestamp = event.get('timestamp', '')
+        estado = event.get('status', '')
+        mensaje = event.get('message', '')
+        datos = event.get('data', None)
+
+        sufijo = f": {datos}" if datos is not None else ""
+        log = f"[{timestamp}] [{estado.upper()}] {mensaje}{sufijo}\n"
+
+        try:
+            with open(self.file_path, 'a', encoding='utf-8') as file:
+                file.write(log)
+        except IOError as e:
+            print(f"Error al escribir en archivo de logs: {e}")
+
+
+# Instancia singleton del sujeto para que los módulos la compartan
+_sujeto_log = Sujeto()
+
+
+def obtener_sujeto_log():
+    return _sujeto_log
