@@ -40,10 +40,10 @@ def log(operacion):
         def wrapper(*args, **kwargs):
             try:
                 result = func(*args, **kwargs)
-                print(f"✅ {operacion}")
+                print(f"[INFO] {operacion} completado exitosamente")
                 return result
             except Exception as e:
-                print(f"❌ {operacion}: {e}")
+                print(f"[ERROR] al ejecutar operación {operacion}: {e}")
                 raise
         return wrapper
     return decorator

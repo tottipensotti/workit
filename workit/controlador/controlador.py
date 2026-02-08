@@ -21,13 +21,13 @@ class Controlador:
             'fecha': "Input inválido para fecha, solo se admite formato dd-mm-yyyy"
         }
 
-    @log("Registro agregado")
+    @log("Agregar registro")
     @validar_input
     def agregar_registro(self, data):
         """Añade un registro a la base de datos"""
         self.executor.agregar_bbdd(data)
 
-    @log("Registro eliminado")
+    @log("Eliminar registro")
     def borrar_registro(self, id_registro):
         """Elimina un registro de la base de datos"""
         self.executor.borrar_bbdd(id_registro)
@@ -36,7 +36,7 @@ class Controlador:
         """Consulta los todos los registros de la base de datos"""
         return self.executor.consultar_bbdd()
     
-    @log("Registro modificado")
+    @log("Modificar registro")
     @validar_input
     def modificar_registro(self, data):
         """Modifica un registro de la base de datos"""
