@@ -43,8 +43,13 @@ class RegistroArchivo(Observador):
     Observador que registra logs en un archivo
     """
 
-    def __init__(self, file_path):
-        self.file_path = file_path
+    def __init__(self, logs_dir="."):
+        self.logs_dir = logs_dir
+    
+    def _obtener_ruta_archivo(self):
+        """Genera la ruta del archivo de log basado en la fecha actual (formato: logs_YYYYMMDD.txt)"""
+        fecha = datetime.now().strftime("%Y%m%d")
+        return f"{self.logs_dir}/logs_{fecha}.txt"
     
     def update(self, event):
         timestamp = event.get('timestamp', '')
@@ -56,7 +61,8 @@ class RegistroArchivo(Observador):
         log = f"[{timestamp}] [{estado.upper()}] {mensaje}{sufijo}\n"
 
         try:
-            with open(self.file_path, 'a', encoding='utf-8') as file:
+            file_path = self._obtener_ruta_archivo()
+            with open(file_path, 'a', encoding='utf-8') as file:
                 file.write(log)
         except IOError as e:
             print(f"Error al escribir en archivo de logs: {e}")
