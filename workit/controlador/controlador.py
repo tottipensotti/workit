@@ -1,6 +1,5 @@
 """Script con las funciones para controlar la app"""
 
-import re
 from workit.modelo.executor import Executor
 from workit.utils.decoradores import validar_input, log
 from workit.utils.observadores import Sujeto, RegistroConsola, RegistroArchivo
@@ -42,7 +41,7 @@ class Controlador(Sujeto):
     def consultar_registro(self):
         """Consulta los todos los registros de la base de datos"""
         return self.executor.consultar_bbdd()
-    
+
     @log("Modificar registro")
     @validar_input
     def modificar_registro(self, data):

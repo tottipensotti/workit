@@ -17,7 +17,7 @@ def validar_input(func):
         self = args[0]
         patterns = getattr(self, 'patrones_regex', {})
         error_msg = getattr(self, 'error_messages', {})
-        
+
         data = kwargs.get('data')
 
         try:
@@ -26,7 +26,7 @@ def validar_input(func):
                 for field, value in data.items():
                     if not str(value).strip():
                         raise ValueError(f"{field.capitalize()} no puede estar vacío")
-            
+
                 # Validar patrones RegEx
                 for field, pattern in patterns.items():
                     if field in data:
@@ -72,7 +72,7 @@ def log(operacion):
                     'operation': operacion,
                     'status': 'Success',
                     'message': f"{operacion} completado exitosamente",
-                    'data': kwargs.get('data') if 'data' in kwargs else (args[1] if len(args) > 1 else None)
+                    'data': kwargs.get('data') if 'data' in kwargs else args[1]
                 }
                 sujeto.notify(event)
                 return result
@@ -82,7 +82,7 @@ def log(operacion):
                     'operation': operacion,
                     'status': 'Error',
                     'message': str(e),
-                    'data': kwargs.get('data') if 'data' in kwargs else (args[1] if len(args) > 1 else None)
+                    'data': kwargs.get('data') if 'data' in kwargs else args[1]
                 }
                 sujeto.notify(event)
                 raise

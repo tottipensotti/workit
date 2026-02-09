@@ -37,7 +37,7 @@ class Formulario:
 
         for i, entrada in enumerate(self.entradas):
             entrada.grid(row=2, column=i, padx=20, pady=4, ipadx=3, ipady=3)
-    
+
     def limpiar_formulario(self):
         """Limpia todos los campos del formulario"""
         self.valor_ejercicio.set("")

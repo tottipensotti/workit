@@ -1,3 +1,5 @@
+"""Observadores"""
+
 from datetime import datetime
 
 
@@ -8,20 +10,25 @@ class Sujeto:
         self._observadores = []
 
     def suscribe(self, observador):
+        """Suscribir un nuevo observador"""
         if observador not in self._observadores:
             self._observadores.append(observador)
 
     def unsuscribe(self, observador):
+        """Eliminar un nuevo observador"""
         if observador in self._observadores:
             self._observadores.remove(observador)
 
     def notify(self, evento):
+        """Notificar observadores"""
         for observador in self._observadores:
             observador.update(evento)
 
 
 class Observador:
-    def update(self, evento):
+    """Clase constructora de observadores"""
+    def update(self, event):
+        """Actualiza el observador"""
         raise NotImplementedError("Los observadores deben implementar el método update().")
 
 class RegistroConsola(Observador):
@@ -45,12 +52,15 @@ class RegistroArchivo(Observador):
 
     def __init__(self, logs_dir="."):
         self.logs_dir = logs_dir
-    
+
     def _obtener_ruta_archivo(self):
-        """Genera la ruta del archivo de log basado en la fecha actual (formato: logs_YYYYMMDD.txt)"""
+        """
+        Genera la ruta del archivo de log
+        basado en la fecha actual (formato: logs_YYYYMMDD.txt)
+        """
         fecha = datetime.now().strftime("%Y%m%d")
         return f"{self.logs_dir}/logs_{fecha}.txt"
-    
+
     def update(self, event):
         timestamp = event.get('timestamp', '')
         estado = event.get('status', '')
@@ -73,4 +83,5 @@ _sujeto_log = Sujeto()
 
 
 def obtener_sujeto_log():
+    """Obtiene el sujeto a observar"""
     return _sujeto_log
