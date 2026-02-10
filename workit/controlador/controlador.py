@@ -25,7 +25,7 @@ class Controlador(Sujeto):
 
         # Suscribir observadores
         self.suscribe(RegistroConsola())
-        self.suscribe(RegistroArchivo('app.log'))
+        self.suscribe(RegistroArchivo('logs'))
 
     @log("Agregar registro")
     @validar_input

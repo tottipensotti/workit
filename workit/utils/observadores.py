@@ -1,6 +1,7 @@
 """Observadores"""
 
 from datetime import datetime
+import os
 
 
 class Sujeto:
@@ -42,7 +43,7 @@ class RegistroConsola(Observador):
         mensaje = event.get('message', '')
         datos = event.get('data', None)
 
-        sufijo = f": {datos}" if datos is not None else ""
+        sufijo = f"({datos})" if datos is not None else ""
         print(f"[{timestamp}] [{estado.upper()}] {mensaje}{sufijo}")
 
 class RegistroArchivo(Observador):
@@ -52,6 +53,7 @@ class RegistroArchivo(Observador):
 
     def __init__(self, logs_dir="."):
         self.logs_dir = logs_dir
+        os.makedirs(self.logs_dir, exist_ok=True)
 
     def _obtener_ruta_archivo(self):
         """
@@ -76,12 +78,3 @@ class RegistroArchivo(Observador):
                 file.write(log)
         except IOError as e:
             print(f"Error al escribir en archivo de logs: {e}")
-
-
-# Instancia singleton del sujeto para que los módulos la compartan
-_sujeto_log = Sujeto()
-
-
-def obtener_sujeto_log():
-    """Obtiene el sujeto a observar"""
-    return _sujeto_log

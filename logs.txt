@@ -1,5 +1,0 @@
-[2026-02-08 19:58:54] [ERROR] Ejercicio no puede estar vacío: {'ejercicio': '', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '08-02-2026'}
-[2026-02-08 19:58:54] [ERROR] Ejercicio no puede estar vacío: {'ejercicio': '', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '08-02-2026'}
-[2026-02-08 19:59:14] [SUCCESS] Validación de input completada: {'ejercicio': 'ABC', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '08-02-2026'}
-[2026-02-08 19:59:14] [SUCCESS] Agregar registro completado exitosamente: {'ejercicio': 'ABC', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '08-02-2026'}
-[2026-02-08 19:59:24] [SUCCESS] Eliminar registro completado exitosamente: 7

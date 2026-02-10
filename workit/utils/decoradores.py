@@ -3,7 +3,6 @@
 import re
 from functools import wraps
 from datetime import datetime
-from .observadores import obtener_sujeto_log
 
 
 def validar_input(func):
@@ -12,7 +11,7 @@ def validar_input(func):
     """
     @wraps(func)
     def wrapper(*args, **kwargs):
-        sujeto = obtener_sujeto_log()
+        sujeto = args[0]
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self = args[0]
         patterns = getattr(self, 'patrones_regex', {})
@@ -25,7 +24,7 @@ def validar_input(func):
                 # Validar que ningún campo esté vacío
                 for field, value in data.items():
                     if not str(value).strip():
-                        raise ValueError(f"{field.capitalize()} no puede estar vacío")
+                        raise ValueError(f"Error al validar input para {field.capitalize()}: no puede estar vacío")
 
                 # Validar patrones RegEx
                 for field, pattern in patterns.items():
@@ -63,7 +62,7 @@ def log(operacion):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            sujeto = obtener_sujeto_log()
+            sujeto = args[0]
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             try:
                 result = func(*args, **kwargs)
