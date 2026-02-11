@@ -13,7 +13,7 @@ class ServerHandler(socketserver.BaseRequestHandler):
 
     def _obtener_ruta_archivo(self):
         fecha = datetime.now().strftime("%Y%m%d")
-        root = Path(__file__).resolve().parent.parent.parent
+        root = Path(__file__).resolve().parent.parent
         return f"{root}/logs/logs_servidor_{fecha}.txt"
 
     def _escribir_log(self, log):
