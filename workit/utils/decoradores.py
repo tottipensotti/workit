@@ -24,7 +24,10 @@ def validar_input(func):
                 # Validar que ningún campo esté vacío
                 for field, value in data.items():
                     if not str(value).strip():
-                        raise ValueError(f"Error al validar input para {field.capitalize()}: no puede estar vacío")
+                        raise ValueError(
+                            f"Error al validar input para {field.capitalize()}"
+                            ": no puede estar vacío"
+                        )
 
                 # Validar patrones RegEx
                 for field, pattern in patterns.items():
@@ -43,15 +46,7 @@ def validar_input(func):
             }
             sujeto.notify(event)
             return result
-        except ValueError as e:
-            event = {
-                'timestamp': timestamp,
-                'operation': 'Validación de Input',
-                'status': 'Error',
-                'message': str(e),
-                'data': data
-            }
-            sujeto.notify(event)
+        except ValueError:
             raise
     return wrapper
 

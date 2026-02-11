@@ -1,0 +1,7 @@
+[2026-02-11 20:15:32] [SERVIDOR] 127.0.0.1:52186 | [2026-02-11 20:15:32] [ERROR] Error al validar input para Ejercicio: no puede estar vacío: {'ejercicio': '', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '11-02-2026'}
+[2026-02-11 20:15:39] [SERVIDOR] 127.0.0.1:52187 | [2026-02-11 20:15:39] [SUCCESS] Validación de input completada: {'ejercicio': 'Test', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '11-02-2026'}
+[2026-02-11 20:15:39] [SERVIDOR] 127.0.0.1:52188 | [2026-02-11 20:15:39] [SUCCESS] Agregar registro completado exitosamente: {'ejercicio': 'Test', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '11-02-2026'}
+[2026-02-11 20:16:00] [SERVIDOR] 127.0.0.1:62758 | [2026-02-11 20:16:00] [SUCCESS] Validación de input completada: None
+[2026-02-11 20:16:00] [SERVIDOR] 127.0.0.1:62759 | [2026-02-11 20:16:00] [SUCCESS] Modificar registro completado exitosamente: {'ejercicio': 'Estocadas', 'peso': 12.0, 'reps': 10.0, 'series': 4.0, 'fecha': '11-02-2026'}
+[2026-02-11 20:16:52] [SERVIDOR] 127.0.0.1:54098 | [2026-02-11 20:16:52] [SUCCESS] Validación de input completada: {'ejercicio': 'Remo Rumano', 'peso': 50.0, 'reps': 8.0, 'series': 4.0, 'fecha': '11-02-2026'}
+[2026-02-11 20:16:52] [SERVIDOR] 127.0.0.1:54099 | [2026-02-11 20:16:52] [SUCCESS] Agregar registro completado exitosamente: {'ejercicio': 'Remo Rumano', 'peso': 50.0, 'reps': 8.0, 'series': 4.0, 'fecha': '11-02-2026'}

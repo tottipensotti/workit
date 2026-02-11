@@ -1,9 +1,0 @@
-[2026-02-09 20:40:57] [ERROR] Error al validar input para Ejercicio: no puede estar vacío: {'ejercicio': '', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '09-02-2026'}
-[2026-02-09 20:40:57] [ERROR] Error al validar input para Ejercicio: no puede estar vacío: {'ejercicio': '', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '09-02-2026'}
-[2026-02-09 20:41:13] [SUCCESS] Validación de input completada: {'ejercicio': 'Prueba', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '09-02-2026'}
-[2026-02-09 20:41:13] [SUCCESS] Agregar registro completado exitosamente: {'ejercicio': 'Prueba', 'peso': 0.0, 'reps': 0.0, 'series': 0.0, 'fecha': '09-02-2026'}
-[2026-02-09 20:41:20] [SUCCESS] Eliminar registro completado exitosamente: 6
-[2026-02-09 20:41:35] [SUCCESS] Validación de input completada: {'ejercicio': 'Press Hombro', 'peso': 100.0, 'reps': 10.0, 'series': 2.0, 'fecha': '09-02-2026'}
-[2026-02-09 20:41:35] [SUCCESS] Agregar registro completado exitosamente: {'ejercicio': 'Press Hombro', 'peso': 100.0, 'reps': 10.0, 'series': 2.0, 'fecha': '09-02-2026'}
-[2026-02-09 20:41:44] [SUCCESS] Validación de input completada
-[2026-02-09 20:41:44] [SUCCESS] Modificar registro completado exitosamente: {'ejercicio': 'Press Hombro', 'peso': 10.0, 'reps': 0.0, 'series': 0.0, 'fecha': '09-02-2026'}
