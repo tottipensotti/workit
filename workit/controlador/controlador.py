@@ -2,7 +2,7 @@
 
 from workit.modelo.executor import Executor
 from workit.utils.decoradores import validar_input, log
-from workit.utils.observadores import Sujeto, RegistroConsola, RegistroArchivo
+from workit.utils.observadores import Sujeto, RegistroConsola, RegistroArchivo, RegistroServidor
 
 
 class Controlador(Sujeto):
@@ -25,7 +25,8 @@ class Controlador(Sujeto):
 
         # Suscribir observadores
         self.suscribe(RegistroConsola())
-        self.suscribe(RegistroArchivo('app.log'))
+        self.suscribe(RegistroArchivo('logs'))
+        self.suscribe(RegistroServidor())
 
     @log("Agregar registro")
     @validar_input

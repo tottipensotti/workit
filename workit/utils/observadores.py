@@ -1,6 +1,7 @@
 """Observadores"""
 
 from datetime import datetime
+import os
 
 
 class Sujeto:
@@ -40,10 +41,9 @@ class RegistroConsola(Observador):
         timestamp = event.get('timestamp', '')
         estado = event.get('status', '')
         mensaje = event.get('message', '')
-        datos = event.get('data', None)
+        datos = event.get('data', '')
 
-        sufijo = f": {datos}" if datos is not None else ""
-        print(f"[{timestamp}] [{estado.upper()}] {mensaje}{sufijo}")
+        print(f"[{timestamp}] [{estado.upper()}] {mensaje}: {datos}")
 
 class RegistroArchivo(Observador):
     """
@@ -52,6 +52,7 @@ class RegistroArchivo(Observador):
 
     def __init__(self, logs_dir="."):
         self.logs_dir = logs_dir
+        os.makedirs(self.logs_dir, exist_ok=True)
 
     def _obtener_ruta_archivo(self):
         """
@@ -65,10 +66,9 @@ class RegistroArchivo(Observador):
         timestamp = event.get('timestamp', '')
         estado = event.get('status', '')
         mensaje = event.get('message', '')
-        datos = event.get('data', None)
+        datos = event.get('data', '')
 
-        sufijo = f": {datos}" if datos is not None else ""
-        log = f"[{timestamp}] [{estado.upper()}] {mensaje}{sufijo}\n"
+        log = f"[{timestamp}] [{estado.upper()}] {mensaje}: {datos}\n"
 
         try:
             file_path = self._obtener_ruta_archivo()
@@ -78,10 +78,26 @@ class RegistroArchivo(Observador):
             print(f"Error al escribir en archivo de logs: {e}")
 
 
-# Instancia singleton del sujeto para que los módulos la compartan
-_sujeto_log = Sujeto()
+class RegistroServidor(Observador):
+    """
+    Observador que envía logs al servidor UDP
+    """
 
+    def update(self, event):
+        try:
+            from workit.server.client import send
+        except ImportError:
+            print("[ERROR] Cliente no encontrado, omitiendo.")
+            return
 
-def obtener_sujeto_log():
-    """Obtiene el sujeto a observar"""
-    return _sujeto_log
+        timestamp = event.get('timestamp', '')
+        estado = event.get('status', '')
+        mensaje = event.get('message', '')
+        datos = event.get('data', '')
+
+        msg = f"[{timestamp}] [{estado.upper()}] {mensaje}: {datos}"
+
+        try:
+            send(msg)
+        except Exception as e:
+            print(f"Error al enviar log al servidor: {e}")
