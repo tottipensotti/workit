@@ -6,9 +6,10 @@ El **Controlador** orquesta la comunicación entre la Vista y el Modelo.
 Sus responsabilidades incluyen:
 
 - Gestionar eventos de botones y formularios.
-- Validar datos entrantes.
+- Validar datos entrantes usando decoradores.
 - Llamar a las funciones del Modelo.
-- Actualizar la Vista con los resultados.
+- Notificar eventos a los observadores (logging).
+- Implementar el patrón Observer para logging distribuido.
 
 Submódulos
 ----------
@@ -32,13 +33,21 @@ Diagrama UML — Controlador
 
    classDiagram
 
-      class Controlador {
-         +crear()
-         +modificar()
-         +borrar()
-         +listar()
+      class Sujeto {
+         +suscribe(observador)
+         +notify(evento)
       }
 
-      Controlador --> Registro
-      Controlador --> Formulario
-      Controlador --> Tabla
+      class Controlador {
+         +agregar_registro(data)
+         +modificar_registro(data)
+         +borrar_registro(id)
+         +consultar_registro()
+      }
+
+      class Executor
+      class Observador
+
+      Sujeto <|-- Controlador
+      Controlador --> Executor
+      Controlador --> Observador : notifica eventos
