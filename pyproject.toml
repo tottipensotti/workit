@@ -13,9 +13,16 @@ authors = [
 ]
 license = "MIT"
 dependencies = [
-  "peewee==3.18.3",
-  "babel>=2.17",
-  "tkcalendar==1.6.1"
+    "peewee==3.18.3",
+    "babel>=2.17",
+    "tkcalendar==1.6.1"
+]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinxcontrib-mermaid",
 ]
 
 [project.scripts]
