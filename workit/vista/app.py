@@ -1,32 +1,42 @@
 """App"""
+
 from tkinter import Tk, messagebox
+from typing import Dict, Any, Tuple, List, Optional
 from workit.controlador import Controlador
 from .componentes import Botonera, Header
 from .formulario import Formulario
 from .tabla import Tabla
 
+
 class App:
     """Clase para crear la UI"""
-    def __init__(self, title):
-        self.root = Tk()
+    def __init__(self, title: str) -> None:
+        self.root: Tk = Tk()
         self.root.title(title)
         self.root.configure(bg="white")
-        self.controlador_vista = Controlador()
-        self.encabezado = Header(self.root, "Agregue su ejercicio")
-        self.formulario = Formulario(
+        self.controlador_vista: Controlador = Controlador()
+        self.encabezado: Header = Header(self.root, "Agregue su ejercicio")
+        self.formulario: Formulario = Formulario(
             self.root,
             color="white",
             ancho_col=20
         )
-        self.botones = Botonera(
+        self.botones: Botonera = Botonera(
             self.root,
             agregar=self.registrar,
             modificar=self.modificar,
             borrar=self.borrar
         )
-        self.tabla = Tabla(
+        self.tabla: Tabla = Tabla(
             self.root,
-            columns=("#", "Ejercicio", "Peso (kg)", "Repeticiones", "Series", "Fecha")
+            columns=(
+                "#",
+                "Ejercicio",
+                "Peso (kg)",
+                "Repeticiones",
+                "Series",
+                "Fecha"
+            )
         )
 
         self.encabezado.mostrar()
@@ -36,9 +46,9 @@ class App:
         self.actualizar_vista()
         self.root.mainloop()
 
-    def registrar(self):
+    def registrar(self) -> None:
         """Agregar un nuevo registro"""
-        data = {
+        data: Dict[str, Any] = {
             "ejercicio": self.formulario.valor_ejercicio.get(),
             "peso": self.formulario.valor_peso.get(),
             "reps": self.formulario.valor_reps.get(),
@@ -52,15 +62,18 @@ class App:
         except ValueError as e:
             messagebox.showerror("Error de validación", str(e))
 
-    def borrar(self):
+    def borrar(self) -> None:
         """Elimina registro seleccionado en la vista"""
-        item = self.tabla.tree.selection()
+        item: Tuple[str, ...] = self.tabla.tree.selection()
         if not item:
-            messagebox.showwarning("Advertencia", "Debe seleccionar un registro")
+            messagebox.showwarning(
+                "Advertencia",
+                "Debe seleccionar un registro"
+            )
             return
 
-        item_id = self.tabla.tree.item(item, "values")[0]
-        confirmacion = messagebox.askyesno(
+        item_id: str = self.tabla.tree.item(item, "values")[0]
+        confirmacion: bool = messagebox.askyesno(
             "Confirmar borrado",
             f"Desea eliminar el registro {item_id}?"
         )
@@ -74,9 +87,9 @@ class App:
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
-    def modificar(self):
+    def modificar(self) -> None:
         """Modifica el registro seleccionado"""
-        item = self.tabla.tree.selection()
+        item: Tuple[str, ...] = self.tabla.tree.selection()
 
         if not item:
             messagebox.showwarning(
@@ -85,10 +98,10 @@ class App:
             )
             return
 
-        data = self.tabla.tree.item(item, "values")
-        id_registro = int(data[0])
+        valores: Tuple[str, ...] = self.tabla.tree.item(item, "values")
+        id_registro: int = int(valores[0])
 
-        confirmacion = messagebox.askyesno(
+        confirmacion: bool = messagebox.askyesno(
             "Confirmar modificación",
             f"Desea modificar el registro {id_registro}?"
         )
@@ -96,7 +109,7 @@ class App:
         if not confirmacion:
             return
 
-        data = {
+        data: Dict[str, Any] = {
             "id": id_registro,
             "ejercicio": self.formulario.valor_ejercicio.get(),
             "peso": self.formulario.valor_peso.get(),
@@ -112,20 +125,21 @@ class App:
         except ValueError as e:
             messagebox.showerror("Error de validación", str(e))
 
-    def actualizar_vista(self):
+    def actualizar_vista(self) -> None:
         """Actualiza el contenido de la vista con los datos de la bbdd"""
-        registros = self.tabla.tree.get_children()
+        items_tree: Tuple[str, ...] = self.tabla.tree.get_children()
 
-        for registro in registros:
-            self.tabla.tree.delete(registro)
+        for item in items_tree:
+            self.tabla.tree.delete(item)
 
-        registros = self.controlador_vista.consultar_registro()
-        for registro in registros:
-            self.tabla.tree.insert("", "end", values=(
-                registro.id,
-                registro.ejercicio,
-                registro.peso,
-                registro.reps,
-                registro.series,
-                registro.fecha
-            ))
+        registros: Optional[List[Any]] = self.controlador_vista.consultar_registro()
+        if registros:
+            for registro in registros:
+                self.tabla.tree.insert("", "end", values=(
+                    registro.id,
+                    registro.ejercicio,
+                    registro.peso,
+                    registro.reps,
+                    registro.series,
+                    registro.fecha
+                ))

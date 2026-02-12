@@ -2,42 +2,46 @@
 
 from datetime import datetime
 import os
+from typing import Dict, List, Any
+from abc import ABC, abstractmethod
+from workit.server.client import send
+
+
+class Observador(ABC):
+    """Clase constructora de observadores"""
+    @abstractmethod
+    def update(self, event: Dict[str, Any]) -> None:
+        """Actualiza el observador"""
 
 
 class Sujeto:
     """Clase que notifica a los observadores sobre eventos"""
 
-    def __init__(self):
-        self._observadores = []
+    def __init__(self) -> None:
+        self._observadores: List[Observador] = []
 
-    def suscribe(self, observador):
+    def suscribe(self, observador: Observador) -> None:
         """Suscribir un nuevo observador"""
         if observador not in self._observadores:
             self._observadores.append(observador)
 
-    def unsuscribe(self, observador):
+    def unsuscribe(self, observador: Observador) -> None:
         """Eliminar un nuevo observador"""
         if observador in self._observadores:
             self._observadores.remove(observador)
 
-    def notify(self, evento):
+    def notify(self, event: Dict[str, Any]) -> None:
         """Notificar observadores"""
         for observador in self._observadores:
-            observador.update(evento)
+            observador.update(event)
 
-
-class Observador:
-    """Clase constructora de observadores"""
-    def update(self, event):
-        """Actualiza el observador"""
-        raise NotImplementedError("Los observadores deben implementar el método update().")
 
 class RegistroConsola(Observador):
     """
     Observador que registra logs en consola
     """
 
-    def update(self, event):
+    def update(self, event: Dict[str, Any]) -> None:
         timestamp = event.get('timestamp', '')
         estado = event.get('status', '')
         mensaje = event.get('message', '')
@@ -45,16 +49,17 @@ class RegistroConsola(Observador):
 
         print(f"[{timestamp}] [{estado.upper()}] {mensaje}: {datos}")
 
+
 class RegistroArchivo(Observador):
     """
     Observador que registra logs en un archivo
     """
 
-    def __init__(self, logs_dir="."):
-        self.logs_dir = logs_dir
+    def __init__(self, logs_dir: str) -> None:
+        self.logs_dir: str = logs_dir
         os.makedirs(self.logs_dir, exist_ok=True)
 
-    def _obtener_ruta_archivo(self):
+    def _obtener_ruta_archivo(self) -> str:
         """
         Genera la ruta del archivo de log
         basado en la fecha actual (formato: logs_YYYYMMDD.txt)
@@ -62,7 +67,7 @@ class RegistroArchivo(Observador):
         fecha = datetime.now().strftime("%Y%m%d")
         return f"{self.logs_dir}/logs_{fecha}.txt"
 
-    def update(self, event):
+    def update(self, event: Dict[str, Any]) -> None:
         timestamp = event.get('timestamp', '')
         estado = event.get('status', '')
         mensaje = event.get('message', '')
@@ -83,12 +88,7 @@ class RegistroServidor(Observador):
     Observador que envía logs al servidor UDP
     """
 
-    def update(self, event):
-        try:
-            from workit.server.client import send
-        except ImportError:
-            print("[ERROR] Cliente no encontrado, omitiendo.")
-            return
+    def update(self, event: Dict[str, Any]) -> None:
 
         timestamp = event.get('timestamp', '')
         estado = event.get('status', '')
@@ -99,5 +99,5 @@ class RegistroServidor(Observador):
 
         try:
             send(msg)
-        except Exception as e:
+        except OSError as e:
             print(f"Error al enviar log al servidor: {e}")

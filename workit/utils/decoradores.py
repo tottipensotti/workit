@@ -3,21 +3,23 @@
 import re
 from functools import wraps
 from datetime import datetime
+from typing import Callable, Any, Dict, TypeVar
+
+F = TypeVar('F', bound=Callable[..., Any])
 
 
-def validar_input(func):
+def validar_input(func: F) -> F:
     """
     Decorador para validar con patrones RegEx el input del formulario
     """
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         sujeto = args[0]
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self = args[0]
-        patterns = getattr(self, 'patrones_regex', {})
-        error_msg = getattr(self, 'error_messages', {})
-
-        data = kwargs.get('data')
+        patterns: Dict[str, str] = getattr(self, 'patrones_regex', {})
+        error_msg: Dict[str, str] = getattr(self, 'error_messages', {})
+        data: Any = kwargs.get('data')
 
         try:
             if data:
@@ -34,10 +36,13 @@ def validar_input(func):
                     if field in data:
                         value = str(data[field])
                         if not re.match(pattern, value):
-                            msg = error_msg.get(field, f"Input inválido para {field}")
+                            msg = error_msg.get(
+                                field,
+                                f"Input inválido para {field}"
+                            )
                             raise ValueError(msg)
-            result = func(*args, **kwargs)
-            event = {
+            result: Any = func(*args, **kwargs)
+            event: Dict[str, Any] = {
                 'timestamp': timestamp,
                 'operation': 'Validación de Input',
                 'status': 'Success',
@@ -46,22 +51,23 @@ def validar_input(func):
             }
             sujeto.notify(event)
             return result
-        except ValueError:
-            raise
+        except ValueError as e:
+            raise e
     return wrapper
 
-def log(operacion):
+
+def log(operacion: str) -> Callable[[F], F]:
     """
     Decorador para registrar operaciones con formato simple
     """
-    def decorator(func):
+    def decorator(func: F) -> F:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             sujeto = args[0]
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            timestamp: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             try:
-                result = func(*args, **kwargs)
-                event = {
+                result: Any = func(*args, **kwargs)
+                event: Dict[str, Any] = {
                     'timestamp': timestamp,
                     'operation': operacion,
                     'status': 'Success',
@@ -71,7 +77,7 @@ def log(operacion):
                 sujeto.notify(event)
                 return result
             except Exception as e:
-                event = {
+                event: Dict[str, Any] = {
                     'timestamp': timestamp,
                     'operation': operacion,
                     'status': 'Error',

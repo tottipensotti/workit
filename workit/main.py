@@ -2,8 +2,11 @@
 
 from workit.vista import App
 
-def main():
-    app = App('Workit 💪')
+
+def main() -> None:
+    """Inicializa la aplicación"""
+    app: App = App('Workit 💪')
+
 
 if __name__ == "__main__":
     main()
