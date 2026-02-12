@@ -51,25 +51,28 @@ Diagrama UML — Modelo
 
    classDiagram
 
-      class Conexion {
+      class SqliteDatabase {
          +connect()
-         +close()
       }
 
-      class SqlExecutor {
-         +execute()
-         +fetch_all()
+      class Executor {
+         +consultar_bbdd()
+         +agregar_bbdd(data)
+         +borrar_bbdd(id)
+         +modificar_bbdd(data)
       }
 
       class Registro {
-         +create()
-         +read()
-         +update()
-         +delete()
+         +id
+         +ejercicio
+         +peso
+         +reps
+         +series
+         +fecha
       }
 
-      Conexion <|-- SqlExecutor
-      SqlExecutor --> Registro
+      SqliteDatabase --> Executor
+      Executor --> Registro
 
 Modelo de datos
 ----------------
@@ -78,10 +81,11 @@ Modelo de datos
 
    erDiagram
 
-      ejercicio {
+      Registro {
          int id PK
-         string nombre
-         string tipo
-         int duracion_min
-         date fecha
+         string ejercicio
+         float peso
+         float reps
+         int series
+         string fecha
       }
