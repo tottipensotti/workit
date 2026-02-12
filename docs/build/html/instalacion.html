@@ -1,0 +1,210 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instalación y Uso &mdash; documentación de Workit - 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=36c4ab74"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=f85f4cfb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Arquitectura" href="arquitectura.html" />
+    <link rel="prev" title="Bienvenidos a la documentación de Workit!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Workit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Guía de inicio</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Instalación y Uso</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#instalacion">Instalación</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#instalacion-con-uv-recomendado">Instalación con uv (recomendado)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#instalacion-con-pip">Instalación con pip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#uso">Uso</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ejecutar-la-aplicacion">Ejecutar la aplicación</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generar-documentacion">Generar documentación</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ejecutar-el-servidor-de-logs-opcional">Ejecutar el servidor de logs (opcional)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencias">Dependencias</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dependencias-opcionales">Dependencias opcionales</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Estructura del proyecto</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="arquitectura.html">Arquitectura</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelo.html">Modelo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vista.html">Vista</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controlador.html">Controlador</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilidades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Servidor UDP</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Workit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Instalación y Uso</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/instalacion.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="instalacion-y-uso">
+<h1>Instalación y Uso<a class="headerlink" href="#instalacion-y-uso" title="Link to this heading"></a></h1>
+<section id="instalacion">
+<h2>Instalación<a class="headerlink" href="#instalacion" title="Link to this heading"></a></h2>
+<p>Workit requiere Python 3.11 o superior.</p>
+<section id="instalacion-con-uv-recomendado">
+<h3>Instalación con uv (recomendado)<a class="headerlink" href="#instalacion-con-uv-recomendado" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clonar el repositorio</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/tottipensotti/workit.git
+<span class="nb">cd</span><span class="w"> </span>workit
+
+<span class="c1"># Instalar dependencias</span>
+uv<span class="w"> </span>sync
+
+<span class="c1"># Instalar dependencias de desarrollo (opcional)</span>
+uv<span class="w"> </span>sync<span class="w"> </span>--dev
+
+<span class="c1"># Instalar dependencias de documentación (opcional)</span>
+uv<span class="w"> </span>sync<span class="w"> </span>--extra<span class="w"> </span>docs
+</pre></div>
+</div>
+</section>
+<section id="instalacion-con-pip">
+<h3>Instalación con pip<a class="headerlink" href="#instalacion-con-pip" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Instalar el paquete</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="uso">
+<h2>Uso<a class="headerlink" href="#uso" title="Link to this heading"></a></h2>
+<section id="ejecutar-la-aplicacion">
+<h3>Ejecutar la aplicación<a class="headerlink" href="#ejecutar-la-aplicacion" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Con uv</span>
+uv<span class="w"> </span>run<span class="w"> </span>workit
+
+<span class="c1"># O directamente</span>
+python<span class="w"> </span>-m<span class="w"> </span>workit.main
+</pre></div>
+</div>
+</section>
+<section id="generar-documentacion">
+<h3>Generar documentación<a class="headerlink" href="#generar-documentacion" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
+make<span class="w"> </span>html
+
+<span class="c1"># La documentación se generará en docs/build/html/</span>
+</pre></div>
+</div>
+</section>
+<section id="ejecutar-el-servidor-de-logs-opcional">
+<h3>Ejecutar el servidor de logs (opcional)<a class="headerlink" href="#ejecutar-el-servidor-de-logs-opcional" title="Link to this heading"></a></h3>
+<p>En una terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>workit.server.server
+</pre></div>
+</div>
+<p>La aplicación enviará automáticamente los logs al servidor si está corriendo.</p>
+</section>
+</section>
+<section id="dependencias">
+<h2>Dependencias<a class="headerlink" href="#dependencias" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>peewee</strong>: ORM para SQLite</p></li>
+<li><p><strong>tkcalendar</strong>: Widget de calendario para Tkinter</p></li>
+<li><p><strong>babel</strong>: Internacionalización</p></li>
+</ul>
+<section id="dependencias-opcionales">
+<h3>Dependencias opcionales<a class="headerlink" href="#dependencias-opcionales" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>sphinx</strong>: Generación de documentación</p></li>
+<li><p><strong>sphinx-rtd-theme</strong>: Tema para documentación</p></li>
+<li><p><strong>sphinxcontrib-mermaid</strong>: Diagramas Mermaid en documentación</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="index.html" class="btn btn-neutral float-left" title="Bienvenidos a la documentación de Workit!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="arquitectura.html" class="btn btn-neutral float-right" title="Arquitectura" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2025, Totti.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

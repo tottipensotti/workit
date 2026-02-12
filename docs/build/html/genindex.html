@@ -475,12 +475,18 @@ window.addEventListener("load", load);</script>
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Estructura del proyecto</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Guía de inicio</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="instalacion.html">Instalación y Uso</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Estructura del proyecto</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="arquitectura.html">Arquitectura</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelo.html">Modelo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vista.html">Vista</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controlador.html">Controlador</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilidades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Servidor UDP</a></li>
 </ul>
 
         </div>
@@ -521,10 +527,14 @@ window.addEventListener("load", load);</script>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  
 </div>
@@ -621,6 +631,10 @@ window.addEventListener("load", load);</script>
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="server.html#workit.server.server.ServerHandler.handle">handle() (método de workit.server.server.ServerHandler)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vista.html#workit.vista.componentes.Header">Header (clase en workit.vista.componentes)</a>
 </li>
   </ul></td>
@@ -638,6 +652,10 @@ window.addEventListener("load", load);</script>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vista.html#workit.vista.formulario.Formulario.limpiar_formulario">limpiar_formulario() (método de workit.vista.formulario.Formulario)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils.html#workit.utils.decoradores.log">log() (en el módulo workit.utils.decoradores)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -663,6 +681,14 @@ window.addEventListener("load", load);</script>
 </li>
         <li><a href="modelo.html#module-workit.modelo.registro">workit.modelo.registro</a>
 </li>
+        <li><a href="server.html#module-workit.server.client">workit.server.client</a>
+</li>
+        <li><a href="server.html#module-workit.server.server">workit.server.server</a>
+</li>
+        <li><a href="utils.html#module-workit.utils.decoradores">workit.utils.decoradores</a>
+</li>
+        <li><a href="utils.html#module-workit.utils.observadores">workit.utils.observadores</a>
+</li>
         <li><a href="vista.html#module-workit.vista.app">workit.vista.app</a>
 </li>
         <li><a href="vista.html#module-workit.vista.componentes">workit.vista.componentes</a>
@@ -685,6 +711,22 @@ window.addEventListener("load", load);</script>
   </ul></td>
 </tr></table>
 
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils.html#workit.utils.observadores.Sujeto.notify">notify() (método de workit.utils.observadores.Sujeto)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils.html#workit.utils.observadores.Observador">Observador (clase en workit.utils.observadores)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -698,9 +740,15 @@ window.addEventListener("load", load);</script>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vista.html#workit.vista.app.App.registrar">registrar() (método de workit.vista.app.App)</a>
 </li>
+      <li><a href="modelo.html#workit.modelo.registro.Registro">Registro (clase en workit.modelo.registro)</a>
+</li>
+      <li><a href="utils.html#workit.utils.observadores.RegistroArchivo">RegistroArchivo (clase en workit.utils.observadores)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modelo.html#workit.modelo.registro.Registro">Registro (clase en workit.modelo.registro)</a>
+      <li><a href="utils.html#workit.utils.observadores.RegistroConsola">RegistroConsola (clase en workit.utils.observadores)</a>
+</li>
+      <li><a href="utils.html#workit.utils.observadores.RegistroServidor">RegistroServidor (clase en workit.utils.observadores)</a>
 </li>
       <li><a href="modelo.html#workit.modelo.registro.Registro.reps">reps (atributo de workit.modelo.registro.Registro)</a>
 </li>
@@ -710,7 +758,17 @@ window.addEventListener("load", load);</script>
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="server.html#workit.server.client.send">send() (en el módulo workit.server.client)</a>
+</li>
       <li><a href="modelo.html#workit.modelo.registro.Registro.series">series (atributo de workit.modelo.registro.Registro)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="server.html#workit.server.server.ServerHandler">ServerHandler (clase en workit.server.server)</a>
+</li>
+      <li><a href="utils.html#workit.utils.observadores.Sujeto">Sujeto (clase en workit.utils.observadores)</a>
+</li>
+      <li><a href="utils.html#workit.utils.observadores.Sujeto.suscribe">suscribe() (método de workit.utils.observadores.Sujeto)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -719,6 +777,32 @@ window.addEventListener("load", load);</script>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vista.html#workit.vista.tabla.Tabla">Tabla (clase en workit.vista.tabla)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils.html#workit.utils.observadores.Sujeto.unsuscribe">unsuscribe() (método de workit.utils.observadores.Sujeto)</a>
+</li>
+      <li><a href="utils.html#workit.utils.observadores.Observador.update">update() (método de workit.utils.observadores.Observador)</a>
+
+      <ul>
+        <li><a href="utils.html#workit.utils.observadores.RegistroArchivo.update">(método de workit.utils.observadores.RegistroArchivo)</a>
+</li>
+        <li><a href="utils.html#workit.utils.observadores.RegistroConsola.update">(método de workit.utils.observadores.RegistroConsola)</a>
+</li>
+        <li><a href="utils.html#workit.utils.observadores.RegistroServidor.update">(método de workit.utils.observadores.RegistroServidor)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utils.html#workit.utils.decoradores.validar_input">validar_input() (en el módulo workit.utils.decoradores)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -754,8 +838,36 @@ window.addEventListener("load", load);</script>
         <li><a href="modelo.html#module-workit.modelo.registro">module</a>
 </li>
       </ul></li>
+      <li>
+    workit.server.client
+
+      <ul>
+        <li><a href="server.html#module-workit.server.client">module</a>
+</li>
+      </ul></li>
+      <li>
+    workit.server.server
+
+      <ul>
+        <li><a href="server.html#module-workit.server.server">module</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    workit.utils.decoradores
+
+      <ul>
+        <li><a href="utils.html#module-workit.utils.decoradores">module</a>
+</li>
+      </ul></li>
+      <li>
+    workit.utils.observadores
+
+      <ul>
+        <li><a href="utils.html#module-workit.utils.observadores">module</a>
+</li>
+      </ul></li>
       <li>
     workit.vista.app
 

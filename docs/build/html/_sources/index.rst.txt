@@ -10,9 +10,17 @@ Contenidos
 
 .. toctree::
    :maxdepth: 2
+   :caption: Guía de inicio
+
+   instalacion
+
+.. toctree::
+   :maxdepth: 2
    :caption: Estructura del proyecto
 
    arquitectura
    modelo
    vista
    controlador
+   utils
+   server

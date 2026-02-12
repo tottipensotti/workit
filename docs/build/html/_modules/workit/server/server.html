@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>workit.vista.formulario &mdash; documentación de Workit - 1.0.0</title>
+  <title>workit.server.server &mdash; documentación de Workit - 1.0.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
@@ -504,7 +504,7 @@ window.addEventListener("load", load);</script>
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Código de módulo</a></li>
-      <li class="breadcrumb-item active">workit.vista.formulario</li>
+      <li class="breadcrumb-item active">workit.server.server</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -513,96 +513,69 @@ window.addEventListener("load", load);</script>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Código fuente para workit.vista.formulario</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Clase Formulario&quot;&quot;&quot;</span>
+  <h1>Código fuente para workit.server.server</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Log UDP Server&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">StringVar</span><span class="p">,</span> <span class="n">DoubleVar</span><span class="p">,</span> <span class="n">Entry</span><span class="p">,</span> <span class="n">Tk</span><span class="p">,</span> <span class="n">Widget</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tkcalendar</span><span class="w"> </span><span class="kn">import</span> <span class="n">DateEntry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">socketserver</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
 
-
-<div class="viewcode-block" id="Formulario">
-<a class="viewcode-back" href="../../../vista.html#workit.vista.formulario.Formulario">[documentos]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Formulario</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clase para crear etiquetas y entradas&quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">root</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tk</span><span class="p">,</span> <span class="n">Widget</span><span class="p">],</span>
-        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">ancho_col</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tk</span><span class="p">,</span> <span class="n">Widget</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">color</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ancho_col</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">ancho_col</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">etiquetas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;Ejercicio&quot;</span><span class="p">,</span> <span class="s2">&quot;Peso (kg)&quot;</span><span class="p">,</span> <span class="s2">&quot;Repeticiones&quot;</span><span class="p">,</span> <span class="s2">&quot;Series&quot;</span><span class="p">,</span> <span class="s2">&quot;Fecha&quot;</span>
-        <span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">StringVar</span><span class="p">(),</span> <span class="n">Entry</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">DoubleVar</span><span class="p">(),</span> <span class="n">Entry</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">DoubleVar</span><span class="p">(),</span> <span class="n">Entry</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">DoubleVar</span><span class="p">(),</span> <span class="n">Entry</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">StringVar</span><span class="p">(),</span> <span class="n">DateEntry</span><span class="p">)</span>
-        <span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_ejercicio</span><span class="p">:</span> <span class="n">StringVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_peso</span><span class="p">:</span> <span class="n">DoubleVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_reps</span><span class="p">:</span> <span class="n">DoubleVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_series</span><span class="p">:</span> <span class="n">DoubleVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_fecha</span><span class="p">:</span> <span class="n">StringVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">entradas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Entry</span><span class="p">,</span> <span class="n">DateEntry</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_entries</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Entry</span><span class="p">,</span> <span class="n">DateEntry</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Genero dinámicamente las entradas&quot;&quot;&quot;</span>
-        <span class="n">entradas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Entry</span><span class="p">,</span> <span class="n">DateEntry</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">valor</span><span class="p">,</span> <span class="n">tipo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tipo</span> <span class="o">==</span> <span class="n">Entry</span><span class="p">:</span>
-                <span class="n">entrada</span> <span class="o">=</span> <span class="n">tipo</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
-                    <span class="n">textvariable</span><span class="o">=</span><span class="n">valor</span><span class="p">,</span>
-                    <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ancho_col</span><span class="p">,</span>
-                    <span class="n">relief</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">entrada</span> <span class="o">=</span> <span class="n">tipo</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
-                    <span class="n">textvariable</span><span class="o">=</span><span class="n">valor</span><span class="p">,</span>
-                    <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ancho_col</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>
-                    <span class="n">date_pattern</span><span class="o">=</span><span class="s2">&quot;dd-mm-yyyy&quot;</span>
-                <span class="p">)</span>
-            <span class="n">entradas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entrada</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">entradas</span>
-
-<div class="viewcode-block" id="Formulario.crear">
-<a class="viewcode-back" href="../../../vista.html#workit.vista.formulario.Formulario.crear">[documentos]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">crear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea el formulario en la UI&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">etiqueta</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">etiquetas</span><span class="p">):</span>
-            <span class="n">Label</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
-                <span class="n">text</span><span class="o">=</span><span class="n">etiqueta</span><span class="p">,</span>
-                <span class="n">bg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
-                <span class="n">fg</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Segoe UI&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;bold&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entrada</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entradas</span><span class="p">):</span>
-            <span class="n">entrada</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ipadx</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ipady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+<span class="n">HOST</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span>
+<span class="n">PORT</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9999</span>
 
 
-<div class="viewcode-block" id="Formulario.limpiar_formulario">
-<a class="viewcode-back" href="../../../vista.html#workit.vista.formulario.Formulario.limpiar_formulario">[documentos]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">limpiar_formulario</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Limpia todos los campos del formulario&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_ejercicio</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_peso</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_reps</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_series</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_fecha</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ServerHandler">
+<a class="viewcode-back" href="../../../server.html#workit.server.server.ServerHandler">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ServerHandler</span><span class="p">(</span><span class="n">socketserver</span><span class="o">.</span><span class="n">BaseRequestHandler</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clase para manejar el server UDP&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_obtener_ruta_archivo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">fecha</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">root</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s2">/logs/logs_servidor_</span><span class="si">{</span><span class="n">fecha</span><span class="si">}</span><span class="s2">.txt&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_escribir_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obtener_ruta_archivo</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">log</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ServerHandler.handle">
+<a class="viewcode-back" href="../../../server.html#workit.server.server.ServerHandler.handle">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Método para interactuar con el servidor&quot;&quot;&quot;</span>
+        <span class="n">raw_data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">socket_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="n">ip</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_address</span>
+        <span class="n">log</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">] [SERVIDOR] </span><span class="si">{</span><span class="n">ip</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_escribir_log</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">socket_client</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="mh">0xA0</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_address</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span></div>
 </div>
 
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">socketserver</span><span class="o">.</span><span class="n">UDPServer</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">),</span> <span class="n">ServerHandler</span><span class="p">)</span> <span class="k">as</span> <span class="n">server</span><span class="p">:</span>
+        <span class="n">ts</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s2">] [SERVIDOR] | Servidor escuchando en </span><span class="si">{</span><span class="n">HOST</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">PORT</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
 </pre></div>
 
            </div>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>workit.vista.formulario &mdash; documentación de Workit - 1.0.0</title>
+  <title>workit.utils.decoradores &mdash; documentación de Workit - 1.0.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
@@ -504,7 +504,7 @@ window.addEventListener("load", load);</script>
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Código de módulo</a></li>
-      <li class="breadcrumb-item active">workit.vista.formulario</li>
+      <li class="breadcrumb-item active">workit.utils.decoradores</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -513,95 +513,102 @@ window.addEventListener("load", load);</script>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Código fuente para workit.vista.formulario</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Clase Formulario&quot;&quot;&quot;</span>
+  <h1>Código fuente para workit.utils.decoradores</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Decoradores workit&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">StringVar</span><span class="p">,</span> <span class="n">DoubleVar</span><span class="p">,</span> <span class="n">Entry</span><span class="p">,</span> <span class="n">Tk</span><span class="p">,</span> <span class="n">Widget</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tkcalendar</span><span class="w"> </span><span class="kn">import</span> <span class="n">DateEntry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">TypeVar</span>
 
-
-<div class="viewcode-block" id="Formulario">
-<a class="viewcode-back" href="../../../vista.html#workit.vista.formulario.Formulario">[documentos]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Formulario</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clase para crear etiquetas y entradas&quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">root</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tk</span><span class="p">,</span> <span class="n">Widget</span><span class="p">],</span>
-        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">ancho_col</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tk</span><span class="p">,</span> <span class="n">Widget</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">color</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ancho_col</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">ancho_col</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">etiquetas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;Ejercicio&quot;</span><span class="p">,</span> <span class="s2">&quot;Peso (kg)&quot;</span><span class="p">,</span> <span class="s2">&quot;Repeticiones&quot;</span><span class="p">,</span> <span class="s2">&quot;Series&quot;</span><span class="p">,</span> <span class="s2">&quot;Fecha&quot;</span>
-        <span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">StringVar</span><span class="p">(),</span> <span class="n">Entry</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">DoubleVar</span><span class="p">(),</span> <span class="n">Entry</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">DoubleVar</span><span class="p">(),</span> <span class="n">Entry</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">DoubleVar</span><span class="p">(),</span> <span class="n">Entry</span><span class="p">),</span>
-            <span class="p">(</span><span class="n">StringVar</span><span class="p">(),</span> <span class="n">DateEntry</span><span class="p">)</span>
-        <span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_ejercicio</span><span class="p">:</span> <span class="n">StringVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_peso</span><span class="p">:</span> <span class="n">DoubleVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_reps</span><span class="p">:</span> <span class="n">DoubleVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_series</span><span class="p">:</span> <span class="n">DoubleVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_fecha</span><span class="p">:</span> <span class="n">StringVar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">entradas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Entry</span><span class="p">,</span> <span class="n">DateEntry</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_entries</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Entry</span><span class="p">,</span> <span class="n">DateEntry</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Genero dinámicamente las entradas&quot;&quot;&quot;</span>
-        <span class="n">entradas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Entry</span><span class="p">,</span> <span class="n">DateEntry</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">valor</span><span class="p">,</span> <span class="n">tipo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tipo</span> <span class="o">==</span> <span class="n">Entry</span><span class="p">:</span>
-                <span class="n">entrada</span> <span class="o">=</span> <span class="n">tipo</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
-                    <span class="n">textvariable</span><span class="o">=</span><span class="n">valor</span><span class="p">,</span>
-                    <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ancho_col</span><span class="p">,</span>
-                    <span class="n">relief</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">entrada</span> <span class="o">=</span> <span class="n">tipo</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
-                    <span class="n">textvariable</span><span class="o">=</span><span class="n">valor</span><span class="p">,</span>
-                    <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ancho_col</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>
-                    <span class="n">date_pattern</span><span class="o">=</span><span class="s2">&quot;dd-mm-yyyy&quot;</span>
-                <span class="p">)</span>
-            <span class="n">entradas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entrada</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">entradas</span>
-
-<div class="viewcode-block" id="Formulario.crear">
-<a class="viewcode-back" href="../../../vista.html#workit.vista.formulario.Formulario.crear">[documentos]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">crear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea el formulario en la UI&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">etiqueta</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">etiquetas</span><span class="p">):</span>
-            <span class="n">Label</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span>
-                <span class="n">text</span><span class="o">=</span><span class="n">etiqueta</span><span class="p">,</span>
-                <span class="n">bg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
-                <span class="n">fg</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-                <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Segoe UI&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;bold&quot;</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entrada</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entradas</span><span class="p">):</span>
-            <span class="n">entrada</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ipadx</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ipady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+<span class="n">F</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="Formulario.limpiar_formulario">
-<a class="viewcode-back" href="../../../vista.html#workit.vista.formulario.Formulario.limpiar_formulario">[documentos]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">limpiar_formulario</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Limpia todos los campos del formulario&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_ejercicio</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_peso</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_reps</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_series</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">valor_fecha</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
-</div>
+<div class="viewcode-block" id="validar_input">
+<a class="viewcode-back" href="../../../utils.html#workit.utils.decoradores.validar_input">[documentos]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validar_input</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorador para validar con patrones RegEx el input del formulario</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="n">sujeto</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">patterns</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;patrones_regex&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">error_msg</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;error_messages&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                <span class="c1"># Validar que ningún campo esté vacío</span>
+                <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Error al validar input para </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="s2">&quot;: no puede estar vacío&quot;</span>
+                        <span class="p">)</span>
+
+                <span class="c1"># Validar patrones RegEx</span>
+                <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">patterns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">field</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+                            <span class="n">msg</span> <span class="o">=</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="n">field</span><span class="p">,</span>
+                                <span class="sa">f</span><span class="s2">&quot;Input inválido para </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="p">)</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">event</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+                <span class="s1">&#39;operation&#39;</span><span class="p">:</span> <span class="s1">&#39;Validación de Input&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;Success&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Validación de input completada&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span>
+            <span class="p">}</span>
+            <span class="n">sujeto</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+
+<div class="viewcode-block" id="log">
+<a class="viewcode-back" href="../../../utils.html#workit.utils.decoradores.log">[documentos]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">operacion</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">F</span><span class="p">],</span> <span class="n">F</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorador para registrar operaciones con formato simple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span><span class="p">:</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="n">sujeto</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">event</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+                    <span class="s1">&#39;operation&#39;</span><span class="p">:</span> <span class="n">operacion</span><span class="p">,</span>
+                    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;Success&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">operacion</span><span class="si">}</span><span class="s2"> completado exitosamente&quot;</span><span class="p">,</span>
+                    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;data&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">}</span>
+                <span class="n">sujeto</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">result</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">event</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+                    <span class="s1">&#39;operation&#39;</span><span class="p">:</span> <span class="n">operacion</span><span class="p">,</span>
+                    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                    <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;data&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">}</span>
+                <span class="n">sujeto</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                <span class="k">raise</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
 
 </pre></div>
 

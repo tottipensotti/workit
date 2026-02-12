@@ -455,6 +455,7 @@ window.addEventListener("load", load);</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Utilidades" href="utils.html" />
     <link rel="prev" title="Vista" href="vista.html" /> 
 </head>
 
@@ -477,7 +478,11 @@ window.addEventListener("load", load);</script>
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Estructura del proyecto</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Guía de inicio</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="instalacion.html">Instalación y Uso</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Estructura del proyecto</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="arquitectura.html">Arquitectura</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelo.html">Modelo</a></li>
@@ -493,6 +498,8 @@ window.addEventListener("load", load);</script>
 <li class="toctree-l2"><a class="reference internal" href="#diagrama-uml-controlador">Diagrama UML — Controlador</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilidades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Servidor UDP</a></li>
 </ul>
 
         </div>
@@ -525,9 +532,10 @@ window.addEventListener("load", load);</script>
 <p>Sus responsabilidades incluyen:</p>
 <ul class="simple">
 <li><p>Gestionar eventos de botones y formularios.</p></li>
-<li><p>Validar datos entrantes.</p></li>
+<li><p>Validar datos entrantes usando decoradores.</p></li>
 <li><p>Llamar a las funciones del Modelo.</p></li>
-<li><p>Actualizar la Vista con los resultados.</p></li>
+<li><p>Notificar eventos a los observadores (logging).</p></li>
+<li><p>Implementar el patrón Observer para logging distribuido.</p></li>
 </ul>
 <section id="submodulos">
 <h2>Submódulos<a class="headerlink" href="#submodulos" title="Link to this heading"></a></h2>
@@ -538,7 +546,7 @@ window.addEventListener("load", load);</script>
 <dl class="py class">
 <dt class="sig sig-object py" id="workit.controlador.controlador.Controlador">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">workit.controlador.controlador.</span></span><span class="sig-name descname"><span class="pre">Controlador</span></span><a class="reference internal" href="_modules/workit/controlador/controlador.html#Controlador"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#workit.controlador.controlador.Controlador" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sujeto</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="utils.html#workit.utils.observadores.Sujeto" title="workit.utils.observadores.Sujeto"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sujeto</span></code></a></p>
 <p>Clase que controla la interacción entre UI y la BBDD</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="workit.controlador.controlador.Controlador.agregar_registro">
@@ -574,16 +582,24 @@ window.addEventListener("load", load);</script>
 <pre  class="mermaid">
         classDiagram
 
-   class Controlador {
-      +crear()
-      +modificar()
-      +borrar()
-      +listar()
+   class Sujeto {
+      +suscribe(observador)
+      +notify(evento)
    }
 
-   Controlador --&gt; Registro
-   Controlador --&gt; Formulario
-   Controlador --&gt; Tabla
+   class Controlador {
+      +agregar_registro(data)
+      +modificar_registro(data)
+      +borrar_registro(id)
+      +consultar_registro()
+   }
+
+   class Executor
+   class Observador
+
+   Sujeto &lt;|-- Controlador
+   Controlador --&gt; Executor
+   Controlador --&gt; Observador : notifica eventos
     </pre></section>
 </section>
 
@@ -592,6 +608,7 @@ window.addEventListener("load", load);</script>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
         <a href="vista.html" class="btn btn-neutral float-left" title="Vista" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="Utilidades" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
